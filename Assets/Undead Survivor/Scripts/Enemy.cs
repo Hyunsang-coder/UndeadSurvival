@@ -5,19 +5,34 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
+    // RuntimeAnimatorControllers는 컴포넌트가 아님!
+    [SerializeField] RuntimeAnimatorController[] runTimeAC;
+
     [SerializeField] float speed;
+    [SerializeField] float health;
+    [SerializeField] float maxHealth;
+    [SerializeField] Animator animator;
+
+
     [SerializeField] Rigidbody2D target;
-
-    bool isLive = true;
-
+    bool isLive;
     Rigidbody2D rigid;
     SpriteRenderer spriter;
+    
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         
+    }
+
+    private void OnEnable()
+    {
+        target = GameManager.Instance.Player.GetComponent<Rigidbody2D>();
+        isLive = true;
+        health = maxHealth;
     }
 
     private void FixedUpdate()
@@ -28,7 +43,7 @@ public class Enemy : MonoBehaviour
         Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
 
-        // NextVec과 충돌하지 않기 위
+        // NextVec과 velocity가 충돌하지 않도록하기위해.
         rigid.velocity = Vector2.zero;
 
         
@@ -38,15 +53,37 @@ public class Enemy : MonoBehaviour
     {
         spriter.flipX = target.position.x < rigid.position.x;
     }
-    // Start is called before the first frame update
-    void Start()
+    
+    public void EnemyInint(SpawnData data)
     {
-        target = GameManager.Instance.Player.GetComponent<Rigidbody2D>();
+        maxHealth = data.maxHealth;
+        health = data.maxHealth;
+        speed = data.speed;
+
+        animator.runtimeAnimatorController = runTimeAC[data.enemyType];
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision.CompareTag("Bullet"))
+        {
+            health -= collision.GetComponent<Bullet>().GetDamage();
+            Debug.Log("Collided"); 
+        }
+
+        if (health > 0)
+        {
+            //
+        }
+        else
+        {
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
     }
 }

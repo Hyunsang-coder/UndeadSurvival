@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rigid;
     SpriteRenderer spriteRender;
     Animator anim;
+    public Scanner scanner;
 
     [SerializeField] float moveSpeed = 3f;
 
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         spriteRender = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
     }
     void Start()
     {

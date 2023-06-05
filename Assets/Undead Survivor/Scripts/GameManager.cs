@@ -4,22 +4,42 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] public Player Player { get; private set; }
     public static GameManager Instance;
 
-    private void Awake()
+    [SerializeField] Player player;
+    [SerializeField] PoolManager poolManager;
+
+    public float GameTime { get; set; }
+    [SerializeField] float maxGameTime = 2 * 10f;
+
+
+    void Awake()
     {
         Instance = this;
-        Player = FindObjectOfType<Player>().GetComponent<Player>();
+        player = FindObjectOfType<Player>().GetComponent<Player>();
+        poolManager = FindObjectOfType<PoolManager>().GetComponent<PoolManager>();
     }
 
-    void Start()
+    private void Update()
     {
-        
+        GameTime += Time.deltaTime;
+
+        if (GameTime > maxGameTime) {
+            GameTime = maxGameTime;
+        }
     }
 
-    void Update()
+    public Player Player
     {
-        
+        get { return player; }
+        private set { player = value; }
     }
+
+    public PoolManager Pool
+    {
+        get { return poolManager; }
+        private set { poolManager = value; }
+    }
+
+
 }
