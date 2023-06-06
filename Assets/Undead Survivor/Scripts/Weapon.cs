@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] int iD;
+    [SerializeField] int ID;
     [SerializeField] int prefabID;
     [SerializeField] float damage;
+    [SerializeField] float rotationSpeed;
 
-    // 1) melee weapon rotation speed or 2) time taken to fire a bullet
-    float speed;
+    [SerializeField] float splitTime;
+    [SerializeField] int meleeWeaponCount;
 
-    //1) melee weapon count or 2) bullet pierce count
-    [SerializeField] int count; 
     float timer;
     Player player;
 
@@ -28,15 +27,15 @@ public class Weapon : MonoBehaviour
     private void Update()
     {
         
-        switch(iD)
+        switch(ID)
         {
             case 0:
-                transform.Rotate(Vector3.back, speed * Time.deltaTime);
+                transform.Rotate(Vector3.back, rotationSpeed * Time.deltaTime);
                 break;
             default:
                 timer += Time.deltaTime;
 
-                if(timer > speed)
+                if(timer > splitTime)
                 {
                     Fire();
                     timer = 0;
@@ -55,14 +54,14 @@ public class Weapon : MonoBehaviour
 
     public void Init()
     {
-        switch(iD)
+        switch(ID)
         {
             case 0:
-                speed = 150f;
+                //rotationSpeed = 150f;
                 Placement();
                 break;
             default:
-                speed = 0.3f;
+                //timePerCount = 0.3f;
                 break;
         }
     }
@@ -70,13 +69,15 @@ public class Weapon : MonoBehaviour
     public void LevelUp(float damage, int count)
     {
         this.damage += damage;
-        this.count += count;
+        this.meleeWeaponCount += count;
         Placement();
     }
 
     void Placement()
     {
-        for (int index = 0; index < count; index++)
+
+        if (ID == 1) return;
+        for (int index = 0; index < meleeWeaponCount; index++)
         {
             Transform bullet;
 
@@ -94,8 +95,8 @@ public class Weapon : MonoBehaviour
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
 
-            // Z축으로 조금씩 더 회전 + Y축으로 1.5만큼 이동 
-            Vector3 rotVec = Vector3.forward * 360 * index / count;
+            // Z축으로 조금씩 더 회전 + Y축으로 1.5만큼 이동 *Space.World는 부모의 로테이션과 상관없이 월드 기준 Y축 이동하기 위함 
+            Vector3 rotVec = Vector3.forward * 360 * index / meleeWeaponCount;
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World);
 
@@ -115,6 +116,6 @@ public class Weapon : MonoBehaviour
 
         // Z축을 기준으로 dir 방향으로 rotate 
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.GetComponent<Bullet>().Init(damage, count, dir);
+        bullet.GetComponent<Bullet>().Init(damage, meleeWeaponCount, dir);
     }
 }

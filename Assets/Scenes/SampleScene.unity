@@ -233,7 +233,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   poolManager: {fileID: 0}
+  gameTime: 0
   maxGameTime: 20
+  kill: 0
+  xp: 0
+  level: 0
+  nextLvXP: 050000000a000000140000001e0000003c00000064000000
 --- !u!4 &290745842
 Transform:
   m_ObjectHideFlags: 0
@@ -355,10 +360,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29276e912bbc4e92945f866f1bccbda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iD: 1
+  ID: 1
   prefabID: 2
   damage: 3
-  count: 1
+  rotationSpeed: 0
+  splitTime: 0.4
+  meleeWeaponCount: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,6 +543,38 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &529406233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 529406234}
+  m_Layer: 0
+  m_Name: test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &529406234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529406233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 757745399}
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,6 +684,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &757745398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 757745399}
+  m_Layer: 0
+  m_Name: child
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &757745399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757745398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 529406234}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &774622055
@@ -18195,10 +18265,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29276e912bbc4e92945f866f1bccbda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iD: 0
+  ID: 0
   prefabID: 1
   damage: 5
-  count: 2
+  rotationSpeed: 150
+  splitTime: 0
+  meleeWeaponCount: 1
 --- !u!1 &1685633051
 GameObject:
   m_ObjectHideFlags: 0
@@ -18534,19 +18606,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoints: []
   spawnData:
-  - spawnTime: 1.6
+  - spawnTime: 1.2
     maxHealth: 10
     speed: 1.5
     enemyType: 0
-  - spawnTime: 1.5
+  - spawnTime: 1.1
     maxHealth: 14
     speed: 1.8
     enemyType: 1
-  - spawnTime: 1.5
+  - spawnTime: 1
     maxHealth: 18
     speed: 2
     enemyType: 0
-  - spawnTime: 1.2
+  - spawnTime: 1
     maxHealth: 20
     speed: 2.2
     enemyType: 1
