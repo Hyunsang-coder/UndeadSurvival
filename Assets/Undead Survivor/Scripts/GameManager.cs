@@ -19,15 +19,18 @@ public class GameManager : MonoBehaviour
 
     [Header("PlayerInfo")]
     public int kill;
-    [SerializeField] int xp;
-    [SerializeField] int level;
-    [SerializeField] int[] nextLvXP;
+    public int XP;
 
+    
+
+    public int Level;
+    public int[] NextLvXP;
     void Awake()
     {
         Instance = this;
         player = FindObjectOfType<Player>().GetComponent<Player>();
         poolManager = FindObjectOfType<PoolManager>().GetComponent<PoolManager>();
+
     }
 
     private void Update()
@@ -54,14 +57,14 @@ public class GameManager : MonoBehaviour
     public void GainXP()
     {
         kill++;
-        xp++;
-        if (xp == nextLvXP[level])
+        XP++;
+        if (XP == NextLvXP[Level])
         {
-            level++;
-            xp = 0;
+            Level++;
+            XP = 0;
 
             //out of bounds 에러 방지용 
-            level = Mathf.Clamp(level, 0, nextLvXP.Length -1);
+            Level = Mathf.Clamp(Level, 0, NextLvXP.Length -1);
         }
     }
 }

@@ -15,6 +15,7 @@ public class HUD : MonoBehaviour
     {
         myText = GetComponent<Text>();
         mySlider = GetComponent<Slider>();
+        if (!mySlider) {Debug.Log("Failed to access mySlider");};
     }
 
 
@@ -24,6 +25,10 @@ public class HUD : MonoBehaviour
         {
             case InfoType.Exp:
 
+                float currentXP = GameManager.Instance.XP;
+                float maxXP = GameManager.Instance.NextLvXP[GameManager.Instance.Level];
+
+                mySlider.value = currentXP/maxXP;
                 break;
 
             case InfoType.Level:
