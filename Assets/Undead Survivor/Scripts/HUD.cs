@@ -15,7 +15,6 @@ public class HUD : MonoBehaviour
     {
         myText = GetComponent<Text>();
         mySlider = GetComponent<Slider>();
-        if (!mySlider) {Debug.Log("Failed to access mySlider");};
     }
 
 
@@ -26,23 +25,33 @@ public class HUD : MonoBehaviour
             case InfoType.Exp:
 
                 float currentXP = GameManager.Instance.XP;
-                float maxXP = GameManager.Instance.NextLvXP[GameManager.Instance.Level];
+                float maxXP = GameManager.Instance.NextLvXP[GameManager.Instance.playerLevel];
 
                 mySlider.value = currentXP/maxXP;
                 break;
 
             case InfoType.Level:
+            // F0은 소수점이 0, F1은 소수점 1자리
+            myText.text = string.Format("Level.{0:F0}",GameManager.Instance.playerLevel);
 
                 break;
             case InfoType.Kill:
-
+            myText.text = string.Format("{0:F0}",GameManager.Instance.kill);
                 break;
 
             case InfoType.Time:
-
+            float remainTime = GameManager.Instance.MaxGameTime - GameManager.Instance.GameTime;
+            int min = Mathf.FloorToInt(remainTime / 60);
+            int sec = Mathf.FloorToInt(remainTime % 60);
+            myText.text = string.Format("{0:D2}:{1:D2}", min, sec);
                 break;
 
             case InfoType.Health:
+            
+                float currentHP = GameManager.Instance.helath;
+                float maxHP = GameManager.Instance.maxHealth;
+
+                mySlider.value = currentHP/maxHP;
 
                 break;
 

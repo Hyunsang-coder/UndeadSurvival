@@ -18,8 +18,7 @@ public class Spawner : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        // 10초마다 레벨 증가 (Lv0 -> Lv1 ... ) 
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.GameTime / 10f), spawnData.Length - 1);
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.stageLevel), spawnData.Length - 1);
 
         if (timer > (spawnData[level].spawnTime))
         {

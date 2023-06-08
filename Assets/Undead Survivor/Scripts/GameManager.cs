@@ -12,18 +12,20 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Game Control")]
-    [SerializeField] float gameTime;
-    [SerializeField] float maxGameTime = 2 * 10f;
+    public float GameTime;
+    public float MaxGameTime;
 
-    public float GameTime { get; private set; }
-
+    
     [Header("PlayerInfo")]
     public int kill;
     public int XP;
+    public int helath;
+    public int maxHealth = 100;
 
-    
+    public int playerLevel;
 
-    public int Level;
+    public int stageLevel;
+
     public int[] NextLvXP;
     void Awake()
     {
@@ -33,12 +35,18 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void Start() {
+        helath = maxHealth;
+    }
+
     private void Update()
     {
         GameTime += Time.deltaTime;
 
-        if (GameTime > maxGameTime) {
-            GameTime = maxGameTime;
+        if (GameTime > MaxGameTime) {
+            GameTime = MaxGameTime;
+            stageLevel ++;
+            GameTime = 0;
         }
     }
 
@@ -56,15 +64,14 @@ public class GameManager : MonoBehaviour
 
     public void GainXP()
     {
-        kill++;
         XP++;
-        if (XP == NextLvXP[Level])
+        if (XP == NextLvXP[playerLevel])
         {
-            Level++;
+            playerLevel++;
             XP = 0;
 
             //out of bounds 에러 방지용 
-            Level = Mathf.Clamp(Level, 0, NextLvXP.Length -1);
+            playerLevel = Mathf.Clamp(playerLevel, 0, NextLvXP.Length -1);
         }
     }
 }
