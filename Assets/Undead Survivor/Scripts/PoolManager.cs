@@ -5,7 +5,7 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     // 프리펩 보관 변수
-    [SerializeField] GameObject[] prefabArray;
+    public GameObject[] PrefabArray;
 
     // pool 담당 리스트
     [SerializeField] List<GameObject>[] poolArray;
@@ -13,7 +13,7 @@ public class PoolManager : MonoBehaviour
     private void Awake()
     {
         // 배열과 리스트 초기화 
-        poolArray = new List<GameObject>[prefabArray.Length];
+        poolArray = new List<GameObject>[PrefabArray.Length];
 
         for (int i = 0; i < poolArray.Length; i++)
         {
@@ -41,7 +41,7 @@ public class PoolManager : MonoBehaviour
 
         // if not, create a new one and assign it to selected 
         if (!selected) {
-            selected = Instantiate(prefabArray[index], transform);
+            selected = Instantiate(PrefabArray[index], transform);
         }
 
         //pool에 등록!

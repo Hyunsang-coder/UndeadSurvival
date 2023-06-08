@@ -7,22 +7,17 @@ public class Weapon : MonoBehaviour
     [SerializeField] int ID;
     [SerializeField] int prefabID;
     [SerializeField] float damage;
-    [SerializeField] float rotationSpeed;
-
-    [SerializeField] float splitTime;
-    [SerializeField] int meleeWeaponCount;
+    [SerializeField] float speed;
+    [SerializeField] int count;
 
     float timer;
     Player player;
 
     private void Awake()
     {
-        player = GetComponentInParent<Player>();        
+        player = GameManager.Instance.Player;        
     }
-    private void Start()
-    {
-        Init();
-    }
+    
 
     private void Update()
     {
@@ -30,12 +25,12 @@ public class Weapon : MonoBehaviour
         switch(ID)
         {
             case 0:
-                transform.Rotate(Vector3.back, rotationSpeed * Time.deltaTime);
+                transform.Rotate(Vector3.back, 150 * Time.deltaTime);
                 break;
             default:
                 timer += Time.deltaTime;
 
-                if(timer > splitTime)
+                if(timer > speed)
                 {
                     Fire();
                     timer = 0;
@@ -52,16 +47,35 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void Init()
+    public void Init(ItemData data)
     {
+        // Basic setup
+        name = "Weapon" + data.itemID;
+        transform.parent = player.transform;
+        transform.localPosition = Vector3.zero;
+
+        // Property setup
+        ID = data.itemID;
+        damage = data.baseDamage;
+        count = data.baseCount;
+        
+        for (int index = 0; index < GameManager.Instance.Pool.PrefabArray.Length; index++)
+        {
+            if (data.prefab == GameManager.Instance.Pool.PrefabArray[index])
+            {
+                prefabID = index;
+                break;
+            }
+        }
+
         switch(ID)
         {
             case 0:
-                //rotationSpeed = 150f;
+                speed = 150f;
                 Placement();
                 break;
             default:
-                //timePerCount = 0.3f;
+                speed = 0.3f;
                 break;
         }
     }
@@ -69,7 +83,7 @@ public class Weapon : MonoBehaviour
     public void LevelUp(float damage, int count)
     {
         this.damage += damage;
-        this.meleeWeaponCount += count;
+        this.count += count;
         Placement();
     }
 
@@ -77,30 +91,30 @@ public class Weapon : MonoBehaviour
     {
 
         if (ID == 1) return;
-        for (int index = 0; index < meleeWeaponCount; index++)
+        for (int index = 0; index < count; index++)
         {
-            Transform bullet;
+            Transform shovel;
 
             if (index < transform.childCount)
             {
-                bullet = transform.GetChild(index);
+                shovel = transform.GetChild(index);
             }
             else
             {
-                bullet = GameManager.Instance.Pool.GetObject(prefabID).transform;
-                bullet.parent = transform;
+                shovel = GameManager.Instance.Pool.GetObject(prefabID).transform;
+                shovel.parent = transform;
             }
 
             //위치와 로테이션 초기화 > 플레이어 위치로 이동
-            bullet.localPosition = Vector3.zero;
-            bullet.localRotation = Quaternion.identity;
+            shovel.localPosition = Vector3.zero;
+            shovel.localRotation = Quaternion.identity;
 
             // Z축으로 조금씩 더 회전 + Y축으로 1.5만큼 이동 *Space.World는 부모의 로테이션과 상관없이 월드 기준 Y축 이동하기 위함 
-            Vector3 rotVec = Vector3.forward * 360 * index / meleeWeaponCount;
-            bullet.Rotate(rotVec);
-            bullet.Translate(bullet.up * 1.5f, Space.World);
+            Vector3 rotVec = Vector3.forward * 360 * index / count;
+            shovel.Rotate(rotVec);
+            shovel.Translate(shovel.up * 1.5f, Space.World);
 
-            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // -1은 무한 관통, 방향은 임의의 수 할
+            shovel.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // -1은 무한 관통, 방향은 임의의 수 할
         }
     }
 
@@ -116,6 +130,6 @@ public class Weapon : MonoBehaviour
 
         // Z축을 기준으로 dir 방향으로 rotate 
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.GetComponent<Bullet>().Init(damage, meleeWeaponCount, dir);
+        bullet.GetComponent<Bullet>().Init(damage, count, dir);
     }
 }
