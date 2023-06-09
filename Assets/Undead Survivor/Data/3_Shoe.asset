@@ -10,20 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cc97e787084db440a41d2a7f89101a0, type: 3}
-  m_Name: Potion
+  m_Name: 3_Shoe
   m_EditorClassIdentifier: 
-  itemType: 4
-  itemID: 4
-  itemName: Potion
-  itemDesc: 
-  itemIcon: {fileID: 927338625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  itemType: 3
+  itemID: 3
+  itemName: Boots
+  itemDesc: Movement speed up {0}%
+  itemIcon: {fileID: -966295699, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   baseDamage: 0
   baseCount: 0
   damages:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.4
+  - 0.5
   counts: 0000000000000000000000000000000000000000
   prefab: {fileID: 0}
+  handSprite: {fileID: 0}

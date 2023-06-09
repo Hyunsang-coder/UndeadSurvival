@@ -32,7 +32,7 @@ public class HUD : MonoBehaviour
 
             case InfoType.Level:
             // F0은 소수점이 0, F1은 소수점 1자리
-            myText.text = string.Format("Level.{0:F0}",GameManager.Instance.playerLevel);
+            myText.text = string.Format("Level.{0:F0}",GameManager.Instance.playerLevel + 1);
 
                 break;
             case InfoType.Kill:

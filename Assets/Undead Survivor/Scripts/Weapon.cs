@@ -21,12 +21,16 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
+        if(!GameManager.Instance.isGameLive) return;
         
         switch(ID)
         {
+            // shovel
             case 0:
                 transform.Rotate(Vector3.back, 150 * Time.deltaTime);
                 break;
+
+            // bullet
             default:
                 timer += Time.deltaTime;
 
@@ -39,7 +43,7 @@ public class Weapon : MonoBehaviour
                 break;
         }
 
-        //test
+        //For debugging 
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -78,6 +82,11 @@ public class Weapon : MonoBehaviour
                 speed = 0.3f;
                 break;
         }
+
+        // Weapon이 초기화 될때 손도 셋업 => melee = 0, range = 1
+        Hand hand  = player.hands[(int)data.itemType];
+        hand.spriter.sprite = data.handSprite;
+        hand.gameObject.SetActive(true);
     }
 
     public void LevelUp(float damage, int count)

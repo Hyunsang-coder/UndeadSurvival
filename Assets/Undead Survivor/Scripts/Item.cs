@@ -11,65 +11,111 @@ public class Item : MonoBehaviour
     public Weapon weapon;
 
     Image icon;
-    Text textLevel;
+    Text levelTxt;
+    Text nameTxt;
+    Text descTxt;
+
 
     private void Awake() {
         icon = GetComponentsInChildren<Image>()[1];
         icon.sprite = data.itemIcon;
-
-        Text[] texts = GetComponentsInChildren<Text>();
-        textLevel = texts[0];
-
         button = GetComponent<Button>();
 
+        Text[] texts = GetComponentsInChildren<Text>();
+        levelTxt = texts[0];
+        nameTxt = texts[1];
+        descTxt = texts[2];
+        nameTxt.text = data.itemName;
+
+        
+
+    }
+
+    private void OnEnable() {
+        levelTxt.text = "Lv." + (level+1);
+
+        UpdateItemInfo();
+        
+    }
+
+    public void UpdateItemInfo()
+    {
+        switch (data.itemType){
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+                descTxt.text = string.Format(data.itemDesc, data.damages[level] *100, data.counts[level]);
+                levelTxt.text = "Lv." + (level+1);
+                break;
+            
+            case ItemData.ItemType.Glove:
+                descTxt.text = string.Format(data.itemDesc, data.damages[level]*100);
+                levelTxt.text = "Lv." + (level+1);
+                break;
+
+            case ItemData.ItemType.Shoe:
+                descTxt.text = string.Format(data.itemDesc, data.damages[level] *100);
+                levelTxt.text = "Lv." + (level+1);
+                break;
+            default:
+                descTxt.text = string.Format(data.itemDesc);
+                levelTxt.text = "Lv." + (level+1);
+                break;
+
+        }
     }
 
     private void Start() {
-        button.onClick.AddListener(()=>
-        {
-            switch (data.itemType)
-            {
-                case ItemData.ItemType.Melee:
-                case ItemData.ItemType.Range:
-                if (level == 0)
-                {
-                    GameObject newWeapon = new GameObject();
-                    weapon = newWeapon.AddComponent<Weapon>();
-
-                    weapon.Init(data);
-                }
-                else
-                {
-                    float nextDmage = data.baseDamage;
-                    int nextCount = 0;
-
-                    nextDmage += data.baseDamage * data.damages[level];
-                    nextCount += data.baseCount + data.counts[level];
-
-                    weapon.LevelUp(nextDmage, nextCount);
-                }
-
-                    break;
-                case ItemData.ItemType.Shoe:
-                    break;
-                case ItemData.ItemType.Glove:
-                    break;
-                case ItemData.ItemType.Potion:
-                    break;
-            }
-
-            level++;
-
-            if (level == data.damages.Length) 
-            {
-                button.interactable = false;
-            }
+        button.onClick.AddListener(OnClick);
+        
+        button.onClick.AddListener(()=>{
+            
+            GameObject.FindObjectOfType<LevelUp>().Hide();
         });
+        
     }
 
-    private void LateUpdate() {
-        
-        textLevel.text = "Lv." + (level);
+    public void OnClick()
+    {
+        switch (data.itemType)
+        {
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+            if (level == 0)
+            {
+                GameObject newWeapon = new GameObject();
+                weapon = newWeapon.AddComponent<Weapon>();
 
+                weapon.Init(data);
+            }
+            else
+            {
+                float nextDmage = data.baseDamage;
+                int nextCount = 0;
+
+                nextDmage += data.baseDamage * data.damages[level];
+                nextCount += data.baseCount + data.counts[level];
+
+                weapon.LevelUp(nextDmage, nextCount);
+            }
+
+                break;
+            case ItemData.ItemType.Shoe:
+                break;
+            case ItemData.ItemType.Glove:
+                break;
+            case ItemData.ItemType.Potion:
+                break;
+        }
+
+        
+        level++;
+
+        if (level == data.damages.Length) 
+        {
+            level--;
+            button.interactable = false;
+        }
+
+        GameObject.FindObjectOfType<LevelUp>().Hide();
     }
 }

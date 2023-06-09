@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     SpriteRenderer spriteRender;
     Animator anim;
     public Scanner scanner;
+    public Hand[] hands; 
 
     [SerializeField] float moveSpeed = 3f;
 
@@ -20,6 +21,8 @@ public class Player : MonoBehaviour
         spriteRender = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+        // include inactive components 
+        hands = GetComponentsInChildren<Hand>(true);
     }
     void Start()
     {
@@ -36,6 +39,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(!GameManager.Instance.isGameLive) return;
+
         Vector2 nextPosition = InputVector * Time.fixedDeltaTime * moveSpeed;
         rigid.MovePosition(rigid.position + nextPosition );
 

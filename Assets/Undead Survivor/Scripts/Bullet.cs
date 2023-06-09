@@ -51,6 +51,7 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
+        if(!GameManager.Instance.isGameLive) return;
         
         if (pierce == -1) return;
 

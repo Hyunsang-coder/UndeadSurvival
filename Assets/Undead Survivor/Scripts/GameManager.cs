@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
     public float GameTime;
     public float MaxGameTime;
 
+    public LevelUp LevelUpModal;
+
+    public bool isGameLive = true;
+
     
     [Header("PlayerInfo")]
     public int kill;
@@ -37,10 +41,15 @@ public class GameManager : MonoBehaviour
 
     private void Start() {
         helath = maxHealth;
+
+        // temporary
+        LevelUpModal.Select(0);
     }
 
     private void Update()
     {
+        if(!isGameLive) return;
+        
         GameTime += Time.deltaTime;
 
         if (GameTime > MaxGameTime) {
@@ -70,8 +79,20 @@ public class GameManager : MonoBehaviour
             playerLevel++;
             XP = 0;
 
+            LevelUpModal.Show();
+
             //out of bounds 에러 방지용 
             playerLevel = Mathf.Clamp(playerLevel, 0, NextLvXP.Length -1);
         }
+    }
+
+    public void StopGame(){
+        isGameLive = false;
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame(){
+        isGameLive = true;
+        Time.timeScale = 1;
     }
 }

@@ -17,6 +17,6 @@ public class FollowPlayer : MonoBehaviour
 
     private void FixedUpdate() {
         
-        rect.transform.position = Camera.main.WorldToScreenPoint(GameManager.Instance.Player.transform.position);
+        rect.transform.position = Camera.main.WorldToScreenPoint(GameManager.Instance.Player.transform.position) ;
     }
 }
