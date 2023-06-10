@@ -47,7 +47,7 @@ public class Weapon : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            LevelUp(5f, 2);
+            LevelUp(5f, 1);
         }
     }
 
@@ -89,10 +89,11 @@ public class Weapon : MonoBehaviour
         hand.gameObject.SetActive(true);
     }
 
-    public void LevelUp(float damage, int count)
+    public void LevelUp(float nextDamage, int nextCount)
     {
-        this.damage += damage;
-        this.count += count;
+        damage = nextDamage;
+        count += nextCount;
+        Debug.Log("Next Count: " + nextCount);
         Placement();
     }
 
@@ -100,6 +101,7 @@ public class Weapon : MonoBehaviour
     {
 
         if (ID == 1) return;
+
         for (int index = 0; index < count; index++)
         {
             Transform shovel;

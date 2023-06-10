@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
     [Header("PlayerInfo")]
     public int kill;
     public int XP;
-    public int helath;
-    public int maxHealth = 100;
+    public float health;
+    public float maxHealth = 100;
 
     public int playerLevel;
 
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameStart() {
-        helath = maxHealth;
+        health = maxHealth;
 
         // temporary
         LevelUpModal.Select(0);
