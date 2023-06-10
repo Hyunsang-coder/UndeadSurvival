@@ -74,15 +74,12 @@ public class GameManager : MonoBehaviour
     public void GainXP()
     {
         XP++;
-        if (XP == NextLvXP[playerLevel])
+        if (XP == NextLvXP[Mathf.Min(playerLevel, NextLvXP.Length-1)])
         {
             playerLevel++;
             XP = 0;
 
             LevelUpModal.Show();
-
-            //out of bounds 에러 방지용 
-            playerLevel = Mathf.Clamp(playerLevel, 0, NextLvXP.Length -1);
         }
     }
 
