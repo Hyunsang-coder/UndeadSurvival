@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     public LevelUp LevelUpModal;
 
-    public bool isGameLive = true;
+    public bool isGameLive;
 
     
     [Header("PlayerInfo")]
@@ -36,14 +36,16 @@ public class GameManager : MonoBehaviour
         Instance = this;
         player = FindObjectOfType<Player>().GetComponent<Player>();
         poolManager = FindObjectOfType<PoolManager>().GetComponent<PoolManager>();
+        LevelUpModal = FindObjectOfType<LevelUp>(true).GetComponent<LevelUp>();
 
     }
 
-    private void Start() {
+    public void GameStart() {
         helath = maxHealth;
 
         // temporary
         LevelUpModal.Select(0);
+        isGameLive =true;
     }
 
     private void Update()

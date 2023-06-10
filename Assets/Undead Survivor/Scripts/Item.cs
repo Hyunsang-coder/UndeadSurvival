@@ -67,11 +67,12 @@ public class Item : MonoBehaviour
     private void Start() {
         button.onClick.AddListener(OnClick);
         
+        /*
         button.onClick.AddListener(()=>{
             
             GameObject.FindObjectOfType<LevelUp>().Hide();
         });
-        
+        */
     }
 
     public void OnClick()
@@ -112,7 +113,6 @@ public class Item : MonoBehaviour
 
         if (level == data.damages.Length) 
         {
-            level--;
             button.interactable = false;
         }
 
