@@ -22678,39 +22678,39 @@ MonoBehaviour:
     speed: 1.5
     enemyType: 0
   - spawnTime: 1
-    maxHealth: 14
+    maxHealth: 20
     speed: 1.8
     enemyType: 1
   - spawnTime: 1
-    maxHealth: 18
+    maxHealth: 30
     speed: 2
     enemyType: 0
   - spawnTime: 0.8
-    maxHealth: 20
+    maxHealth: 40
     speed: 2.2
     enemyType: 1
   - spawnTime: 0.8
-    maxHealth: 25
+    maxHealth: 50
     speed: 2.3
     enemyType: 0
   - spawnTime: 0.7
-    maxHealth: 27
+    maxHealth: 60
     speed: 2.4
     enemyType: 1
   - spawnTime: 0.7
-    maxHealth: 27
+    maxHealth: 70
     speed: 2.4
     enemyType: 0
   - spawnTime: 0.7
-    maxHealth: 27
+    maxHealth: 80
     speed: 2.4
     enemyType: 1
   - spawnTime: 0.6
-    maxHealth: 27
+    maxHealth: 90
     speed: 2.4
     enemyType: 0
   - spawnTime: 0.6
-    maxHealth: 27
+    maxHealth: 100
     speed: 2.4
     enemyType: 1
 --- !u!1 &2081164769

@@ -96,9 +96,14 @@ public class Item : MonoBehaviour
                     nextDmage += data.baseDamage * data.damages[level];
                     nextCount += data.counts[level];
 
-                    Debug.Log(nextCount);
-
                     weapon.LevelUp(nextDmage, nextCount);
+                }
+
+                level++;
+
+                if (level == data.damages.Length) 
+                {
+                    button.interactable = false;
                 }
 
                 break;
@@ -107,16 +112,12 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Glove:
                 break;
             case ItemData.ItemType.Potion:
+                GameManager.Instance.health = GameManager.Instance.maxHealth;
                 break;
         }
 
         
-        level++;
-
-        if (level == data.damages.Length) 
-        {
-            button.interactable = false;
-        }
+        
 
         GameObject.FindObjectOfType<LevelUp>().Hide();
     }
