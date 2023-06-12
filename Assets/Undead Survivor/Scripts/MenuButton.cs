@@ -6,40 +6,59 @@ using UnityEngine.UI;
 public class MenuButton : MonoBehaviour
 {
 
-    public enum ButtonType{
-        StartButton,
-        RetryButton,
+    public enum CharacterType{
+        Character0,
+        Character1,
+        Character2,
+        Character3
     }
     Button button;
-    GameObject parentObject;
+    GameObject startMenuObject;
     GameObject HUD;
 
-    public ButtonType type;
+    public CharacterType characterType;
 
     
-    void OnEnable()
+    void Awake()
     {
         button = GetComponent<Button>();
-        parentObject = transform.parent.gameObject;
+        startMenuObject = transform.parent.gameObject.transform.parent.gameObject;
         HUD = FindObjectOfType<HUD>(true).transform.parent.gameObject;
 
-        switch(type)
+        switch(characterType)
         {
-            case ButtonType.StartButton:
+            case CharacterType.Character0:
             button.onClick.AddListener(()=>
             {
-                parentObject.SetActive(false);
+                startMenuObject.SetActive(false);
                 HUD.SetActive(true);
-                GameManager.Instance.GameStart();
+                GameManager.Instance.GameStart(0);
             });
                 break;
 
                 
-            case ButtonType.RetryButton:
-
+            case CharacterType.Character1:
             button.onClick.AddListener(()=>
             {
-               GameManager.Instance.RetryGame();
+                startMenuObject.SetActive(false);
+                HUD.SetActive(true);
+                GameManager.Instance.GameStart(1);
+            });
+                break;
+            case CharacterType.Character2:
+            button.onClick.AddListener(()=>
+            {
+                startMenuObject.SetActive(false);
+                HUD.SetActive(true);
+                GameManager.Instance.GameStart(2);
+            });
+                break;
+            case CharacterType.Character3:
+            button.onClick.AddListener(()=>
+            {
+                startMenuObject.SetActive(false);
+                HUD.SetActive(true);
+                GameManager.Instance.GameStart(3);
             });
                 break;
 

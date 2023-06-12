@@ -90,13 +90,10 @@ public class Item : MonoBehaviour
                 }
                 else
                 {
-                    float nextDmage = data.baseDamage;
-                    int nextCount = 0;
+                    float nextDamageRate = data.damages[level];
+                    int nextCount = data.counts[level];
 
-                    nextDmage += data.baseDamage * data.damages[level];
-                    nextCount += data.counts[level];
-
-                    weapon.LevelUp(nextDmage, nextCount);
+                    weapon.LevelUp(nextDamageRate, nextCount);
                 }
 
                 level++;
@@ -109,36 +106,40 @@ public class Item : MonoBehaviour
                 break;
             case ItemData.ItemType.Shoe:
                 
-                float moveSpeed = GameManager.Instance.Player.moveSpeed;
-                GameManager.Instance.Player.IncreaseMovementSpeed(data.damages[level]);
-                
+                GameManager.Instance.Player.MoveSpeedUp(data.damages[level]);
+
                 level++;
 
                 if (level == data.damages.Length) 
                 {
                     button.interactable = false;
-                }    
+                }
+
                 break;
             case ItemData.ItemType.Glove:
-                float shootingSpeed = GameManager.Instance.Player.shootingSpeed;
-                GameManager.Instance.Player.IncreaseShootingSpeed(data.damages[level]);
                 
+                GameManager.Instance.Player.ShootSpeedUp(data.damages[level]);
+
                 level++;
 
                 if (level == data.damages.Length) 
                 {
                     button.interactable = false;
-                }    
+                }
 
                 break;
             case ItemData.ItemType.Potion:
                 GameManager.Instance.health = GameManager.Instance.maxHealth;
+
+                
+                if (level == data.damages.Length) 
+                {
+                    button.interactable = false;
+                }
                 break;
         }
 
-        
-        
-
         GameObject.FindObjectOfType<LevelUp>().Hide();
     }
+
 }

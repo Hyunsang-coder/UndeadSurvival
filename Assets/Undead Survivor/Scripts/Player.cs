@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class Player : MonoBehaviour
 {
+
+    public event Action<float> OnShootingSpeedChanged;
     [SerializeField] public Vector2 InputVector { get; private set; }
     Rigidbody2D rigid;
     SpriteRenderer spriteRender;
@@ -12,14 +15,19 @@ public class Player : MonoBehaviour
     public Scanner scanner;
     public Hand[] hands; 
 
-    const float origianlShootingSpeed = 0.3f;
-    public float shootingSpeed;
+    public RuntimeAnimatorController[] animControllers;
 
-
-    const float originalMoveSpeed = 3f; 
-    public float moveSpeed;
+    public PlayerData[] playerData;
 
     
+    public float shootingTimer = 0.3f;
+
+    public float moveSpeed = 3f;
+
+
+    private void OnEnable() {
+        anim.runtimeAnimatorController = animControllers[GameManager.Instance.playerID];
+    }
     private void Awake() 
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -31,8 +39,8 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        shootingSpeed = origianlShootingSpeed;
-        moveSpeed = originalMoveSpeed;
+        shootingTimer = shootingTimer * playerData[GameManager.Instance.playerID].shootingSpeed;
+        moveSpeed = moveSpeed * playerData[GameManager.Instance.playerID].moveSpeed;
     }
 
     //여기서 InputValue는 인풋시스템에서 자동으로 넘겨 줌
@@ -41,13 +49,7 @@ public class Player : MonoBehaviour
         InputVector = value.Get<Vector2>();
     }
 
-    public void IncreaseShootingSpeed(float percentage){
-        shootingSpeed = origianlShootingSpeed - (origianlShootingSpeed*percentage);
-    }
 
-    public void IncreaseMovementSpeed(float percentage){
-        moveSpeed = originalMoveSpeed + (originalMoveSpeed*percentage);
-    }
 
     private void FixedUpdate()
     {
@@ -80,5 +82,16 @@ public class Player : MonoBehaviour
             anim.SetTrigger("Dead");
             GameManager.Instance.GameOver();
         }
+    }
+
+    public void MoveSpeedUp(float percentage)
+    {
+        moveSpeed = moveSpeed + (moveSpeed *percentage);
+    }
+
+    public void ShootSpeedUp(float percetnage)
+    {
+        shootingTimer = shootingTimer - (shootingTimer * percetnage);
+        OnShootingSpeedChanged.Invoke(shootingTimer);
     }
 }

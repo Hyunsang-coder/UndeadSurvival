@@ -28,10 +28,7 @@ public class GameManager : MonoBehaviour
     public int XP;
     public float health;
     public float maxHealth = 100f;
-
-    public float shootingSpeed = 0.3f;
-
-    public float movementSpeed = 3f;
+    public int playerID;
 
 
 
@@ -43,8 +40,6 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        player = FindObjectOfType<Player>().GetComponent<Player>();
-        poolManager = FindObjectOfType<PoolManager>().GetComponent<PoolManager>();
         LevelUpModal = FindObjectOfType<LevelUp>(true).GetComponent<LevelUp>();
         resultMenu = FindObjectOfType<Result>(true).GetComponent<Result>();
 
@@ -52,11 +47,13 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void GameStart() {
+    public void GameStart(int playerID) {
         health = maxHealth;
+        this.playerID = playerID;
 
-        // temporary
-        LevelUpModal.Select(0);
+        player.gameObject.SetActive(true);
+        LevelUpModal.Select(playerID%2);
+        
 
         ResumeGame();
     }
