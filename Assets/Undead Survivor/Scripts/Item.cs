@@ -108,8 +108,28 @@ public class Item : MonoBehaviour
 
                 break;
             case ItemData.ItemType.Shoe:
+                
+                float moveSpeed = GameManager.Instance.Player.moveSpeed;
+                GameManager.Instance.Player.IncreaseMovementSpeed(data.damages[level]);
+                
+                level++;
+
+                if (level == data.damages.Length) 
+                {
+                    button.interactable = false;
+                }    
                 break;
             case ItemData.ItemType.Glove:
+                float shootingSpeed = GameManager.Instance.Player.shootingSpeed;
+                GameManager.Instance.Player.IncreaseShootingSpeed(data.damages[level]);
+                
+                level++;
+
+                if (level == data.damages.Length) 
+                {
+                    button.interactable = false;
+                }    
+
                 break;
             case ItemData.ItemType.Potion:
                 GameManager.Instance.health = GameManager.Instance.maxHealth;

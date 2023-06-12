@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    float damage;
+    [SerializeField] float damage;
     [SerializeField] int pierce;
     Rigidbody2D rigid;
 

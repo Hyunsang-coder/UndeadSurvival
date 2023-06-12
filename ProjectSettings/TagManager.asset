@@ -8,6 +8,8 @@ TagManager:
   - Area
   - Enemy
   - Bullet
+  - ResultMenu
+  - StartMenu
   layers:
   - Default
   - TransparentFX

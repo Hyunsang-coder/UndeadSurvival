@@ -94,7 +94,7 @@ public class Enemy : MonoBehaviour
             rigid.simulated = false;
             spriter.sortingOrder--;
             animator.SetBool("Dead", true);
-            GameManager.Instance.kill++;
+            GameManager.Instance.GainKillScore();
             GameManager.Instance.GainXP();
         }
     }

@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour
         {
             // shovel
             case 0:
-                transform.Rotate(Vector3.back, 150 * Time.deltaTime);
+                transform.Rotate(Vector3.back, speed * Time.deltaTime);
                 break;
 
             // bullet
@@ -79,7 +79,7 @@ public class Weapon : MonoBehaviour
                 Placement();
                 break;
             default:
-                speed = 0.3f;
+                speed = player.shootingSpeed;
                 break;
         }
 

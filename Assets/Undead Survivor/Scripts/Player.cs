@@ -12,7 +12,12 @@ public class Player : MonoBehaviour
     public Scanner scanner;
     public Hand[] hands; 
 
-    [SerializeField] float moveSpeed = 3f;
+    const float origianlShootingSpeed = 0.3f;
+    public float shootingSpeed;
+
+
+    const float originalMoveSpeed = 3f; 
+    public float moveSpeed;
 
     
     private void Awake() 
@@ -26,7 +31,8 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        
+        shootingSpeed = origianlShootingSpeed;
+        moveSpeed = originalMoveSpeed;
     }
 
     //여기서 InputValue는 인풋시스템에서 자동으로 넘겨 줌
@@ -35,7 +41,13 @@ public class Player : MonoBehaviour
         InputVector = value.Get<Vector2>();
     }
 
+    public void IncreaseShootingSpeed(float percentage){
+        shootingSpeed = origianlShootingSpeed - (origianlShootingSpeed*percentage);
+    }
 
+    public void IncreaseMovementSpeed(float percentage){
+        moveSpeed = originalMoveSpeed + (originalMoveSpeed*percentage);
+    }
 
     private void FixedUpdate()
     {
@@ -66,6 +78,7 @@ public class Player : MonoBehaviour
             }
 
             anim.SetTrigger("Dead");
-            }
+            GameManager.Instance.GameOver();
+        }
     }
 }
