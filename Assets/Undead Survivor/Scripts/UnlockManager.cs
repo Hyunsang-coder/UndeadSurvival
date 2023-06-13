@@ -71,6 +71,7 @@ public class UnlockManager : MonoBehaviour
         Transform child = notice.transform.GetChild(index);
 
         child.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
         
         notice.SetActive(true);
 

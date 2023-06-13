@@ -61,9 +61,11 @@ public class GameManager : MonoBehaviour
 
         player.gameObject.SetActive(true);
         LevelUpModal.Select(playerID%2);
-        
 
         ResumeGame();
+
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+        AudioManager.Instance.PlayBGM(true);
     }
 
     
@@ -149,6 +151,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         StopGame();
+
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
+        AudioManager.Instance.PlayBGM(false);
     }
 
 
@@ -166,6 +171,9 @@ public class GameManager : MonoBehaviour
         
         yield return new WaitForSeconds(0.5f);
         StopGame();
+
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
+        AudioManager.Instance.PlayBGM(false);
     }
 
     public void RetryGame(){

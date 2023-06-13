@@ -20,6 +20,9 @@ public class LevelUp : MonoBehaviour
 
         Next();
 
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
+        AudioManager.Instance.ApplyAudioFilter(true);
+
         
     }
 
@@ -27,6 +30,9 @@ public class LevelUp : MonoBehaviour
     {
         GameManager.Instance.ResumeGame();
         rect.localScale = Vector3.zero;
+
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+        AudioManager.Instance.ApplyAudioFilter(false);
         
     }
 
