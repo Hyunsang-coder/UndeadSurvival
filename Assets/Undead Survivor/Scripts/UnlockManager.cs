@@ -8,7 +8,9 @@ public class UnlockManager : MonoBehaviour
     public GameObject [] lockedCharacters;
     public GameObject [] unlockedCharacters;
 
-    enum Achieve {UnlockedMan, UnlockedWoman}
+    public GameObject notice;
+
+    enum Achieve {UnlockedMan, UnlockedLady}
     Achieve[] achieves;
 
     private void Awake() {
@@ -19,13 +21,14 @@ public class UnlockManager : MonoBehaviour
             Init();
         }
 
-        
     }
 
     void AchiveMileStone(int index)
     {
         PlayerPrefs.SetInt(achieves[index].ToString(), 1);
         Debug.Log(achieves[index].ToString() +" : " + PlayerPrefs.GetInt(achieves[index].ToString()));
+
+        StartCoroutine(ActivateNotice(index));
     }
 
     void Start()
@@ -55,9 +58,27 @@ public class UnlockManager : MonoBehaviour
             string character = achieves[i].ToString();
             bool isUnlock = PlayerPrefs.GetInt(character) == 1;
 
-            unlockedCharacters[i].SetActive(isUnlock);
+            
             lockedCharacters[i].SetActive(!isUnlock);
+            unlockedCharacters[i].SetActive(isUnlock);
+
         }
+        
+    }
+
+    IEnumerator ActivateNotice(int index){
+
+        Transform child = notice.transform.GetChild(index);
+
+        child.gameObject.SetActive(true);
+        
+        notice.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(3);
+
+        child.gameObject.SetActive(true);
+
+        notice.SetActive(false);
     }
 
     /*

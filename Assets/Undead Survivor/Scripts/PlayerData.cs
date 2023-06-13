@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Player", menuName = "Scriptable Object/PlayerData")]
 public class PlayerData : ScriptableObject
 {
-    public enum PlayerType{Boy, Girl}
+    public enum PlayerType{Boy, Girl, Man, Lady}
 
     [Header("Bonus Ability")]
     public float damage;
