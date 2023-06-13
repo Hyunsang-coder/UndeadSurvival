@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1.2
   moveSpeed: 1
-  shootingSpeed: 0.9
+  shootingSpeed: 1
   pierceCount: 0
   weaponCount: 0
   characterSprite: {fileID: -150523396, guid: 0c187a32c5bde4747be8d00770b07403, type: 3}

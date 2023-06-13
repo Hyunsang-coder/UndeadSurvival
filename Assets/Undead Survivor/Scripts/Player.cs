@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     {
         shootingTimer = shootingTimer * playerData[GameManager.Instance.playerID].shootingSpeed;
         moveSpeed = moveSpeed * playerData[GameManager.Instance.playerID].moveSpeed;
+        
     }
 
     //여기서 InputValue는 인풋시스템에서 자동으로 넘겨 줌

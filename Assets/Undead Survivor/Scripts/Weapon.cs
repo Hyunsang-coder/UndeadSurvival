@@ -53,12 +53,7 @@ public class Weapon : MonoBehaviour
                 break;
         }
 
-        //For debugging 
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            LevelUp(5f, 1);
-        }
+       
     }
 
     public void Init(ItemData data)

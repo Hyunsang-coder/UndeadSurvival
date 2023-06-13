@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    public event Action<int> OnMeetingUnlockCondition;
 
     [Header("GameObjects")]
     [SerializeField] Player player;
@@ -37,6 +40,11 @@ public class GameManager : MonoBehaviour
     public int stageLevel;
 
     public int[] NextLvXP;
+
+    bool hasKilledMany;
+    bool hasFinishedGame;
+
+
     void Awake()
     {
         Instance = this;
@@ -58,6 +66,7 @@ public class GameManager : MonoBehaviour
         ResumeGame();
     }
 
+    
     private void Update()
     {
         if(!isGameLive) return;
@@ -70,6 +79,20 @@ public class GameManager : MonoBehaviour
             GameTime = 0;
             ResumeGame();
             Victory();
+        }
+
+        if (hasKilledMany && hasFinishedGame) return;
+
+        if (kill == 3 && !hasKilledMany)
+        {
+            OnMeetingUnlockCondition.Invoke(0);
+            hasKilledMany = true;
+        }
+
+        if (GameTime > 10f && !hasFinishedGame)
+        {
+            OnMeetingUnlockCondition.Invoke(1);
+            hasFinishedGame = true;
         }
     }
 
