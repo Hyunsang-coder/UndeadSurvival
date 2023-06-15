@@ -20,11 +20,11 @@ MonoBehaviour:
   baseDamage: 3
   baseCount: 0
   damages:
-  - 0.1
-  - 0.1
-  - 0.07
-  - 0.07
-  - 0.05
-  counts: 0100000001000000010000000100000002000000
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
+  counts: 0200000002000000020000000200000002000000
   prefab: {fileID: 3446779395549071220, guid: e978f87439b7546d89ce93c3dbbccf63, type: 3}
   handSprite: {fileID: -353751291, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}

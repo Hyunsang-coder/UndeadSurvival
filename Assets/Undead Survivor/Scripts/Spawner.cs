@@ -7,12 +7,14 @@ public class Spawner : MonoBehaviour
     [SerializeField] Transform[] spawnPoints;
     // SpawnData도 MonoBehavior에서 상속된 컴포넌트가 아니기에 GetComponents쓸 수 없음.
     [SerializeField] SpawnData[] spawnData;
+    [SerializeField] float levelTime;
     float timer;
     int level;
 
     private void Awake()
     {
         spawnPoints = GetComponentsInChildren<Transform>();
+        levelTime = GameManager.Instance.MaxGameTime / spawnData.Length;
     }
     void Update()
     {
@@ -20,7 +22,7 @@ public class Spawner : MonoBehaviour
         
         timer += Time.deltaTime;
 
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.stageLevel), spawnData.Length - 1);
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.GameTime/ levelTime), spawnData.Length - 1);
 
         if (timer > (spawnData[level].spawnTime))
         {

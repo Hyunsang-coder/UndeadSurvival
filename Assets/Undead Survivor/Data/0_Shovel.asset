@@ -17,14 +17,14 @@ MonoBehaviour:
   itemName: Shovel
   itemDesc: "Damage up {0}% \nAdd {1} shovel(s)"
   itemIcon: {fileID: -181907988, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
-  baseDamage: 4
+  baseDamage: 3
   baseCount: 2
   damages:
-  - 0.1
-  - 0.1
-  - 0.07
-  - 0.07
-  - 0.05
+  - 0.03
+  - 0.03
+  - 0.03
+  - 0.02
+  - 0.02
   counts: 0100000001000000010000000100000002000000
   prefab: {fileID: 684900094673617367, guid: 1ffd8919598d8447a8d71767b4a08628, type: 3}
   handSprite: {fileID: 143021600, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}

@@ -914,6 +914,7 @@ GameObject:
   - component: {fileID: 195078933}
   - component: {fileID: 195078932}
   - component: {fileID: 195078931}
+  - component: {fileID: 195078934}
   m_Layer: 0
   m_Name: EnemyCleaner
   m_TagString: Bullet
@@ -977,6 +978,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &195078934
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195078930}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &197161630
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,7 +1394,7 @@ MonoBehaviour:
   resultMenu: {fileID: 747967994}
   enemyCleaner: {fileID: 195078930}
   GameTime: 0
-  MaxGameTime: 10
+  MaxGameTime: 120
   LevelUpModal: {fileID: 1189299930}
   isGameLive: 0
   kill: 0
@@ -1381,8 +1403,7 @@ MonoBehaviour:
   maxHealth: 100
   playerID: 0
   playerLevel: 0
-  stageLevel: 0
-  NextLvXP: 050000000500000005000000050000000500000005000000050000000500000005000000e8030000
+  NextLvXP: 03000000050000000a0000000a000000140000001400000014000000140000001400000014000000
 --- !u!4 &290745842
 Transform:
   m_ObjectHideFlags: 0
@@ -24230,7 +24251,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1692163508
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24402,7 +24423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1733741494
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25834,46 +25855,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoints: []
   spawnData:
-  - spawnTime: 1
+  - spawnTime: 0.5
     maxHealth: 10
-    speed: 1.5
+    speed: 3
     enemyType: 0
-  - spawnTime: 1
+  - spawnTime: 0.5
     maxHealth: 20
-    speed: 1.8
+    speed: 3
     enemyType: 1
-  - spawnTime: 1
+  - spawnTime: 0.6
+    maxHealth: 10
+    speed: 7
+    enemyType: 0
+  - spawnTime: 0.6
     maxHealth: 30
-    speed: 2
+    speed: 3.3
+    enemyType: 1
+  - spawnTime: 0.6
+    maxHealth: 35
+    speed: 3.3
     enemyType: 0
-  - spawnTime: 0.8
+  - spawnTime: 0.5
+    maxHealth: 12
+    speed: 7.7
+    enemyType: 1
+  - spawnTime: 0.5
     maxHealth: 40
-    speed: 2.2
+    speed: 4
+    enemyType: 0
+  - spawnTime: 0.4
+    maxHealth: 40
+    speed: 4
     enemyType: 1
-  - spawnTime: 0.8
+  - spawnTime: 0.4
     maxHealth: 50
-    speed: 2.3
+    speed: 4
     enemyType: 0
-  - spawnTime: 0.7
-    maxHealth: 60
-    speed: 2.4
+  - spawnTime: 0.3
+    maxHealth: 50
+    speed: 5
     enemyType: 1
-  - spawnTime: 0.7
-    maxHealth: 70
-    speed: 2.4
-    enemyType: 0
-  - spawnTime: 0.7
-    maxHealth: 80
-    speed: 2.4
-    enemyType: 1
-  - spawnTime: 0.6
-    maxHealth: 90
-    speed: 2.4
-    enemyType: 0
-  - spawnTime: 0.6
-    maxHealth: 100
-    speed: 2.4
-    enemyType: 1
+  levelTime: 0
 --- !u!1 &2075387992
 GameObject:
   m_ObjectHideFlags: 0

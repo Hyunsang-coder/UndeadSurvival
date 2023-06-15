@@ -32,11 +32,11 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy") || pierce == -1) return;
+        if (!collision.CompareTag("Enemy") || pierce == -100) return;
 
         pierce--;
 
-        if (pierce == -1) {
+        if (pierce < 0) {
             rigid.velocity = Vector2.zero;
             gameObject.SetActive(false);
         }
@@ -53,7 +53,7 @@ public class Bullet : MonoBehaviour
     {
         if(!GameManager.Instance.isGameLive) return;
         
-        if (pierce == -1) return;
+        if (pierce == -100) return;
 
         timer += Time.deltaTime;
 

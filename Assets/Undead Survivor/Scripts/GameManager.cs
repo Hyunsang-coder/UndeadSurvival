@@ -37,8 +37,7 @@ public class GameManager : MonoBehaviour
 
     public int playerLevel;
 
-    public int stageLevel;
-
+    
     public int[] NextLvXP;
 
     bool hasKilledMany;
@@ -77,7 +76,6 @@ public class GameManager : MonoBehaviour
 
         if (GameTime > MaxGameTime) {
             GameTime = MaxGameTime;
-            stageLevel ++;
             GameTime = 0;
             ResumeGame();
             Victory();
@@ -142,36 +140,41 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(){
         StartCoroutine(GameOverCoroutine());
-
-        resultMenu.gameObject.SetActive(true);
     }
 
     IEnumerator GameOverCoroutine(){
-        isGameLive = false;
-        yield return new WaitForSeconds(0.5f);
+        isGameLive =false;
+        enemyCleaner.SetActive(true);
 
+        yield return new WaitForSeconds(1f);
         StopGame();
+
+        
+        resultMenu.gameObject.SetActive(true);
+        resultMenu.Lose();
 
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
         AudioManager.Instance.PlayBGM(false);
+
     }
 
 
     public void Victory(){
         StartCoroutine(VictoryCoroutine());
 
-        resultMenu.gameObject.SetActive(true);
-        resultMenu.Win();
+       
     }
 
     IEnumerator VictoryCoroutine(){
-        
-        isGameLive = false;
+        isGameLive =false;
         enemyCleaner.SetActive(true);
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         StopGame();
-
+        
+        resultMenu.gameObject.SetActive(true);
+        resultMenu.Win();
+        
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
         AudioManager.Instance.PlayBGM(false);
     }

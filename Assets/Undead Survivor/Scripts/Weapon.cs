@@ -145,7 +145,7 @@ public class Weapon : MonoBehaviour
             shovel.Rotate(rotVec);
             shovel.Translate(shovel.up * 1.5f, Space.World);
 
-            shovel.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // -1은 무한 관통, 방향은 임의의 수 할
+            shovel.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); // -1은 무한 관통, 방향은 임의의 수 할
         }
     }
 
@@ -162,6 +162,8 @@ public class Weapon : MonoBehaviour
         // Z축을 기준으로 dir 방향으로 rotate 
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
         bullet.GetComponent<Bullet>().Init(damage, pierceCount, dir);
+
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
     private void OnDisable() {
