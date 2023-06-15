@@ -143,10 +143,11 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator GameOverCoroutine(){
+        
         isGameLive =false;
         enemyCleaner.SetActive(true);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         StopGame();
 
         

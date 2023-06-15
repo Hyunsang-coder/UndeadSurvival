@@ -25,8 +25,10 @@ public class UnlockManager : MonoBehaviour
 
     void AchiveMileStone(int index)
     {
+        if (PlayerPrefs.GetInt(achieves[index].ToString()) !=0) return;
+
         PlayerPrefs.SetInt(achieves[index].ToString(), 1);
-        Debug.Log(achieves[index].ToString() +" : " + PlayerPrefs.GetInt(achieves[index].ToString()));
+        //Debug.Log(achieves[index].ToString() +" : " + PlayerPrefs.GetInt(achieves[index].ToString()));
 
         StartCoroutine(ActivateNotice(index));
     }

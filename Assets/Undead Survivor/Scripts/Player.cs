@@ -73,18 +73,29 @@ public class Player : MonoBehaviour
         if (!GameManager.Instance.isGameLive) return;
 
         GameManager.Instance.health -= Time.deltaTime * 10;
+        spriteRender.color = Color.red;
 
         if (GameManager.Instance.health <= 0){
             for (int index=2; index < transform.childCount; index++)
             {
                 transform.GetChild(index).gameObject.SetActive(false);
             }
+            
+            spriteRender.color = Color.white;
 
             anim.SetTrigger("Dead");
             GameManager.Instance.GameOver();
         }
     }
 
+    private void OnCollisionExit2D(Collision2D other) {
+        if (!GameManager.Instance.isGameLive) return;
+
+
+        spriteRender.color = Color.white;
+    }
+
+    
     public void MoveSpeedUp(float percentage)
     {
         moveSpeed = moveSpeed + (moveSpeed *percentage);
@@ -94,5 +105,10 @@ public class Player : MonoBehaviour
     {
         shootingTimer = shootingTimer - (shootingTimer * percetnage);
         OnShootingSpeedChanged.Invoke(shootingTimer);
+    }
+
+    void PlayerHitEffect()
+    {
+        return;
     }
 }
