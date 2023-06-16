@@ -44,10 +44,11 @@ public class Reposition : MonoBehaviour
                     transform.Translate(Vector3.up * dirY * 40);
                 }
                 break;
+            
             case "Enemy":
                 if (coll2D.enabled)
                 {
-                    transform.Translate((playerPos - transform.position).normalized * 3 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f));
+                    transform.Translate((playerPos - transform.position).normalized * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f));
                 }
                 break;
         }

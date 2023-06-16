@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
 
     public float moveSpeed = 3f;
 
+    float hitEffectTimer ;
+    float hitEffectMaxTime = 0.3f;
+
 
     private void OnEnable() {
         anim.runtimeAnimatorController = animControllers[GameManager.Instance.playerID];
@@ -36,11 +39,30 @@ public class Player : MonoBehaviour
         scanner = GetComponent<Scanner>();
         // include inactive components 
         hands = GetComponentsInChildren<Hand>(true);
+
+        hitEffectTimer = hitEffectMaxTime;
     }
     void Start()
     {
         shootingTimer = shootingTimer * playerData[GameManager.Instance.playerID].shootingSpeed;
         moveSpeed = moveSpeed * playerData[GameManager.Instance.playerID].moveSpeed;
+        
+    }
+
+    bool isHit;
+    private void Update() {
+        hitEffectTimer +=Time.deltaTime;
+        
+        isHit = (hitEffectTimer < hitEffectMaxTime)? true: false;
+
+        if (isHit)
+        {
+            spriteRender.color = Color.red;
+        }
+        else 
+        {
+            spriteRender.color = Color.white;
+        }
         
     }
 
@@ -73,26 +95,21 @@ public class Player : MonoBehaviour
         if (!GameManager.Instance.isGameLive) return;
 
         GameManager.Instance.health -= Time.deltaTime * 10;
-        spriteRender.color = Color.red;
+        hitEffectTimer = 0;
+
 
         if (GameManager.Instance.health <= 0){
             for (int index=2; index < transform.childCount; index++)
             {
                 transform.GetChild(index).gameObject.SetActive(false);
             }
-            
+
+            // 사망 시 다시 흰색으로
             spriteRender.color = Color.white;
 
             anim.SetTrigger("Dead");
             GameManager.Instance.GameOver();
         }
-    }
-
-    private void OnCollisionExit2D(Collision2D other) {
-        if (!GameManager.Instance.isGameLive) return;
-
-
-        spriteRender.color = Color.white;
     }
 
     

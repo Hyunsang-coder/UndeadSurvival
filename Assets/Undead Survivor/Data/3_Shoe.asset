@@ -22,9 +22,9 @@ MonoBehaviour:
   damages:
   - 0.1
   - 0.1
-  - 0.07
-  - 0.05
-  - 0.03
+  - 0.1
+  - 0.1
+  - 0.1
   counts: 0000000000000000000000000000000000000000
   prefab: {fileID: 0}
   handSprite: {fileID: 0}
