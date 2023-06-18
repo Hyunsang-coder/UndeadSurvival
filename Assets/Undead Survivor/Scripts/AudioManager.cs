@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+
+    [SerializeField] Slider bgmSlider;
+    [SerializeField] Slider sfxSlider;
 
     [Header("BGM")]
     public AudioClip bgmClip;
@@ -31,6 +35,10 @@ public class AudioManager : MonoBehaviour
 
     void Init()
     {
+
+        bgmVolume =  PlayerPrefs.GetFloat("BGM", bgmVolume);
+        sfxVolume =  PlayerPrefs.GetFloat("SFX", sfxVolume);
+
         // initialize BGM 
         GameObject bgmObject = new GameObject("BGMPalyer");
         bgmObject.transform.parent = transform;
@@ -40,6 +48,9 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.volume = bgmVolume;
         bgmPlayer.clip = bgmClip;
         audioFilter = Camera.main.GetComponent<AudioHighPassFilter>();
+        
+        bgmSlider.value = bgmVolume;
+        sfxSlider.value = sfxVolume;
 
 
         // initialize SFX
@@ -55,6 +66,7 @@ public class AudioManager : MonoBehaviour
             sfxPlayers[index].bypassListenerEffects = true;
             sfxPlayers[index].volume = sfxVolume;
         }
+
     }
 
     public void PlaySfx(Sfx sfx)
@@ -85,6 +97,27 @@ public class AudioManager : MonoBehaviour
 
     }
 
+    public void PlayClickSound()
+    {   
+        if(sfxPlayers == null) return;
+        
+        for (int index=0; index < sfxPlayers.Length; index++)
+        {
+            int loopIndex = (index + channelIndex) % sfxPlayers.Length;
+
+
+            if (sfxPlayers[loopIndex].isPlaying)
+            {
+                continue;
+            }
+
+            channelIndex = loopIndex;
+            sfxPlayers[loopIndex].clip = sfxClips[(int)Sfx.Select];
+            sfxPlayers[loopIndex].Play();
+            break;
+        }
+    }
+
     public void PlayBGM(bool shouldPlay)
     {
         if (shouldPlay){
@@ -99,6 +132,28 @@ public class AudioManager : MonoBehaviour
     public void ApplyAudioFilter(bool shouldPlay)
     {
         audioFilter.enabled = shouldPlay;
+    }
+
+    public void ChangeBGMVolume()
+    {
+        bgmVolume = bgmSlider.value;
+        bgmPlayer.volume = bgmVolume;
+
+        PlayerPrefs.SetFloat("BGM", bgmVolume);
+    }
+
+    public void ChangeSFXVolume()
+    {
+        sfxVolume = sfxSlider.value;
+
+        if (sfxPlayers == null) return;
+
+        foreach (AudioSource sfxPlayer in sfxPlayers)
+        {
+            sfxPlayer.volume = sfxVolume;
+        }
+
+        PlayerPrefs.SetFloat("SFX", sfxVolume);
     }
 
 }

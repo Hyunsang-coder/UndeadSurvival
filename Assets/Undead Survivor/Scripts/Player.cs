@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
 
     public event Action<float> OnShootingSpeedChanged;
-    [SerializeField] public Vector2 InputVector { get; private set; }
+    public Vector2 inputVector;
     Rigidbody2D rigid;
     SpriteRenderer spriteRender;
     Animator anim;
@@ -27,9 +27,29 @@ public class Player : MonoBehaviour
     float hitEffectTimer ;
     float hitEffectMaxTime = 0.3f;
 
+    PlayerControl inputAction;
+    public float dashForce = 10f;
+    public float dashCoolDown = 0.3f;
+
+    public float dashStamina = 5f;
+
+    public float stamina = 10f; 
 
     private void OnEnable() {
         anim.runtimeAnimatorController = animControllers[GameManager.Instance.playerID];
+        
+        
+        // input system code에 이벤트 등록
+        inputAction = new PlayerControl();
+        
+        inputAction.Player.Move.performed += Move;
+        inputAction.Player.Move.canceled += Move;
+        inputAction.Player.Move.Enable();
+
+        inputAction.Player.Dash.performed += Dash;
+        inputAction.Player.Dash.Enable();
+
+        
     }
     private void Awake() 
     {
@@ -52,6 +72,7 @@ public class Player : MonoBehaviour
     bool isHit;
     private void Update() {
         hitEffectTimer +=Time.deltaTime;
+        stamina += Time.deltaTime;
         
         isHit = (hitEffectTimer < hitEffectMaxTime)? true: false;
 
@@ -63,30 +84,34 @@ public class Player : MonoBehaviour
         {
             spriteRender.color = Color.white;
         }
+
         
     }
 
     //여기서 InputValue는 인풋시스템에서 자동으로 넘겨 줌
-    void OnMove(InputValue value)
+    void Move(InputAction.CallbackContext context)
     {
-        InputVector = value.Get<Vector2>();
+        inputVector = context.ReadValue<Vector2>().normalized;
     }
 
 
-
+    bool isDashing;
     private void FixedUpdate()
     {
         if(!GameManager.Instance.isGameLive) return;
 
-        Vector2 nextPosition = InputVector * Time.fixedDeltaTime * moveSpeed;
+        if (isDashing) return;
+
+        Vector2 nextPosition = inputVector * Time.fixedDeltaTime * moveSpeed;
         rigid.MovePosition(rigid.position + nextPosition );
 
-        if (InputVector.x != 0)
+        if (inputVector.x != 0)
         {
-            spriteRender.flipX = InputVector.x < 0;
+            spriteRender.flipX = inputVector.x < 0;
         }
+        
 
-        anim.SetFloat("Speed", InputVector.magnitude);
+        anim.SetFloat("Speed", inputVector.magnitude);
 
 
     }
@@ -124,8 +149,58 @@ public class Player : MonoBehaviour
         OnShootingSpeedChanged.Invoke(shootingTimer);
     }
 
-    void PlayerHitEffect()
+
+    /*
+    void Dash(InputAction.CallbackContext context)
     {
-        return;
+        isDashing = true;
+
+        float dashForce = 200f;
+        
+        rigid.AddForce(inputVector.normalized* dashForce, ForceMode2D.Impulse);
+        Invoke("StopDash", 0.4f);
+
+
+        Debug.Log("Dashing!");
+        
+        
     }
+    void StopDash()
+    {
+        isDashing = false;
+    }
+    */
+    void Dash(InputAction.CallbackContext context)
+    {
+        if (isDashing || stamina < dashStamina) return;
+
+        StartCoroutine(DashCoroutine());
+    }
+
+    private IEnumerator DashCoroutine()
+    {
+        isDashing = true;
+        stamina -= dashStamina;
+        Vector2 dashDir;
+        if (inputVector == Vector2.zero)
+        {
+            dashDir = spriteRender.flipX? Vector2.left: Vector2.right;
+        }
+        else
+        {
+            dashDir = inputVector;
+        }
+        
+        // dash for 0.2 seconds
+        for (float t = 0; t < dashCoolDown; t += Time.deltaTime)
+        {
+            transform.position += (Vector3)(dashDir * dashForce * Time.deltaTime);
+            yield return null;  // wait until the next frame
+        }
+
+        isDashing = false;
+    }
+
+    
+
 }

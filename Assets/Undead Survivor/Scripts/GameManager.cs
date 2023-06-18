@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
     IEnumerator GameOverCoroutine(){
         
         isGameLive =false;
-        enemyCleaner.SetActive(true);
+        //enemyCleaner.SetActive(true);
 
         yield return new WaitForSeconds(0.5f);
         StopGame();
@@ -162,8 +162,6 @@ public class GameManager : MonoBehaviour
 
     public void Victory(){
         StartCoroutine(VictoryCoroutine());
-
-       
     }
 
     IEnumerator VictoryCoroutine(){
