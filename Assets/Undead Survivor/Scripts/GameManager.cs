@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
     bool hasKilledMany;
     bool hasFinishedGame;
 
+    bool dashLearned;
+    bool shieldLearned;
+    bool whirlWindLearned;
 
     void Awake()
     {
@@ -67,42 +70,64 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayBGM(true);
     }
 
-    bool dashlearned;
+    
     private void Update()
     {
-        if(!isGameLive) return;
-        
+        if (!isGameLive) return;
+
         GameTime += Time.deltaTime;
 
-        if (GameTime > MaxGameTime) {
+        if (GameTime > MaxGameTime)
+        {
             GameTime = MaxGameTime;
             GameTime = 0;
             ResumeGame();
             Victory();
         }
 
+        CheckAchievements();
+    }
+
+    private void CheckAchievements()
+    {
+        // Character unlocked
         if (hasKilledMany && hasFinishedGame) return;
+
 
         if (kill == 10 && !hasKilledMany)
         {
             OnMeetingUnlockCondition.Invoke(0);
             hasKilledMany = true;
-
-            
-            Debug.Log("learned Dash!");
         }
 
-        if (kill == 5 && !dashlearned)
-        {
-            dashlearned = true;
-            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.Dash);
-        }
 
         if (GameTime > 30f && !hasFinishedGame)
         {
             OnMeetingUnlockCondition.Invoke(1);
             hasFinishedGame = true;
         }
+
+
+        // skill unlocked 
+        if (kill == 1 && !dashLearned)
+        {
+            dashLearned = true;
+            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.Dash);
+        }
+
+        if (kill == 3 && !shieldLearned)
+        {
+            shieldLearned = true;
+            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.HolyShield);
+        }
+
+        if (kill == 20 && !whirlWindLearned)
+        {
+            whirlWindLearned = true;
+            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.WirlWind);
+        }
+
+
     }
 
     public Player Player

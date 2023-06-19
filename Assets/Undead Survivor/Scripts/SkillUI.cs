@@ -8,7 +8,9 @@ public class SkillUI : MonoBehaviour
     [SerializeField] Player player;
     [SerializeField] float  coolTimeIndicator;
     [SerializeField] Image image;
-    
+
+    public SkillManager.PlayerSkill skill;
+
     void Start()
     {
         
@@ -22,18 +24,24 @@ public class SkillUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.dashTimer >= player.dashCoolTime)
+        switch (skill)
         {
-            coolTimeIndicator = 1f;
+            case SkillManager.PlayerSkill.Dash:
+
+                coolTimeIndicator = player.GetDashCoolTimeIndicator();
+                break;
+
+            case SkillManager.PlayerSkill.HolyShield:
+
+                coolTimeIndicator = player.GetShieldCoolTimeIndicator();
+                break;
         }
-        else if (player.dashTimer < player.dashCoolTime)
-        {
-            coolTimeIndicator = player.dashTimer / player.dashCoolTime;
-        }
+        
 
     }
 
     void LateUpdate() {
+
         image.fillAmount = 1- coolTimeIndicator;
     }
 }

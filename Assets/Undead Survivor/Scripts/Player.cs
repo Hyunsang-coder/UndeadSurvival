@@ -24,22 +24,31 @@ public class Player : MonoBehaviour
 
     public float moveSpeed = 3f;
 
+    bool isHit;
     float hitEffectTimer ;
     float hitEffectMaxTime = 0.3f;
 
     PlayerControl inputAction;
-    public float dashForce = 10f;
-    float dashDuration = 0.3f;
-
-    public float dashTimer = 0f;
-
-    public float dashCoolTime = 7f; 
+    
 
     [Header("PlayerSkills")]
     public bool dashLearned;
     public bool whirlWindLearned;
     public bool holyShieldLarned;
     public bool vampireSpiritLearned;
+
+
+    bool isDashing;
+    public float dashForce = 10f;
+    float dashDuration = 0.3f;
+    public float dashTimer = 0f;
+    public float dashCoolTime = 7f;
+    
+    bool isShielding;
+    float shieldDuration = 3f;
+    public float shieldTimer = 0f;
+    public float shieldCoolTime = 10f;
+
 
     private void OnEnable() {
         anim.runtimeAnimatorController = animControllers[GameManager.Instance.playerID];
@@ -55,6 +64,8 @@ public class Player : MonoBehaviour
         inputAction.Player.Dash.performed += Dash;
         inputAction.Player.Dash.Enable();
 
+        inputAction.Player.Shield.performed += UseShield;
+        inputAction.Player.Shield.Enable();
 
         SkillManager.Instance.skillUpdate += UpdatePlayerSkill;
         
@@ -79,18 +90,21 @@ public class Player : MonoBehaviour
                 dashLearned = true;
                 dashTimer = dashCoolTime;
                 break;
-            case(SkillManager.PlayerSkill.WirlWind):
+            
+            case(SkillManager.PlayerSkill.HolyShield):
+                holyShieldLarned = true;
+                shieldTimer = shieldCoolTime;
+                break;
+            case (SkillManager.PlayerSkill.WirlWind):
                 whirlWindLearned = true;
                 break;
-            case(SkillManager.PlayerSkill.HolyShiled):
-                holyShieldLarned = true;
-                break;
-            case(SkillManager.PlayerSkill.VampireSpirit):
+            case (SkillManager.PlayerSkill.VampireSpirit):
                 vampireSpiritLearned = true;
                 break;    
         }
     }
 
+    
 
     void Start()
     {
@@ -99,10 +113,11 @@ public class Player : MonoBehaviour
         
     }
 
-    bool isHit;
+    
     private void Update() {
         hitEffectTimer +=Time.deltaTime;
         dashTimer += Time.deltaTime;
+        shieldTimer += Time.deltaTime;
         
         isHit = (hitEffectTimer < hitEffectMaxTime)? true: false;
 
@@ -125,7 +140,7 @@ public class Player : MonoBehaviour
     }
 
 
-    bool isDashing;
+    
     private void FixedUpdate()
     {
         if(!GameManager.Instance.isGameLive) return;
@@ -148,6 +163,8 @@ public class Player : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D other) {
         if (!GameManager.Instance.isGameLive) return;
+
+        if (isShielding) return;
 
         GameManager.Instance.health -= Time.deltaTime * 10;
         hitEffectTimer = 0;
@@ -180,37 +197,19 @@ public class Player : MonoBehaviour
     }
 
 
-    /*
-    void Dash(InputAction.CallbackContext context)
-    {
-        isDashing = true;
-
-        float dashForce = 200f;
-        
-        rigid.AddForce(inputVector.normalized* dashForce, ForceMode2D.Impulse);
-        Invoke("StopDash", 0.4f);
-
-
-        Debug.Log("Dashing!");
-        
-        
-    }
-    void StopDash()
-    {
-        isDashing = false;
-    }
-    */
+    
     void Dash(InputAction.CallbackContext context)
     {
         if (!dashLearned || isDashing || dashTimer < dashCoolTime) return;
-        dashTimer = 0;
 
         StartCoroutine(DashCoroutine());
     }
 
     private IEnumerator DashCoroutine()
     {
+
         isDashing = true;
+        dashTimer = 0;
         Vector2 dashDir;
         if (inputVector == Vector2.zero)
         {
@@ -231,6 +230,38 @@ public class Player : MonoBehaviour
         isDashing = false;
     }
 
-    
+    public float GetDashCoolTimeIndicator()
+    {
+        if (dashTimer < dashCoolTime)
+        {
+            return dashTimer / dashCoolTime;
+        }
+        else return 1f;
+    }
+
+    public float GetShieldCoolTimeIndicator()
+    {
+        if (shieldTimer < shieldCoolTime)
+        {
+            return shieldTimer / shieldCoolTime;
+        }
+        else return 1f;
+    }
+
+    void UseShield(InputAction.CallbackContext context)
+    {
+        StartCoroutine(ShieldCoroutine());
+    }
+
+    IEnumerator ShieldCoroutine()
+    {
+        isShielding = true;
+        shieldTimer = 0;
+        yield return new WaitForSeconds(shieldDuration);
+
+        isDashing = false;
+
+    }
+
 
 }

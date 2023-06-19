@@ -22,7 +22,6 @@ public class NoticeManager : MonoBehaviour
     public void Notify(int index)
     {
         StartCoroutine(ActivateNotice(index));
-        Debug.Log("notify requested");
     }
 
     IEnumerator ActivateNotice(int index){
@@ -47,7 +46,7 @@ public class NoticeManager : MonoBehaviour
                 noticeText = "Dash unlocked.\nPress Space.";
                 break;
             case(3):
-                noticeText = "Congrats!\nWhirlWind unlocked.";
+                noticeText = "HolyShield unlocked.\nPress Q.";
                 break;
         }
         

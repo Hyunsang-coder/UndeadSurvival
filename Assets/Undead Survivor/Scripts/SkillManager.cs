@@ -9,29 +9,20 @@ public class SkillManager : MonoBehaviour
 
     public event Action<PlayerSkill> skillUpdate;
     public enum PlayerSkill{
-        Dash, WirlWind, HolyShiled, VampireSpirit
+        Dash, WirlWind, HolyShield, VampireSpirit
     }
 
-   PlayerSkill[] skills;
+    public GameObject dashUI;
+    public GameObject shieldUI;
+    public GameObject whirlUI;
+    public GameObject vampireUI;
 
-   public GameObject dashUI;
-
-   public GameObject whirlUI;
-   public GameObject shieldUI;
-   public GameObject vampireUI;
-
-   private float spacing = 12f;
-    /*
-    bool learnedDash;
-    bool learnedWhirlWind;
-    bool learnedHolyShield;
-    bool learnedVampireSpirit;
-    */
+    private float spacing = 15f;
+    
 
     private void Awake() {
         Instance = this;
-        //skills = (PlayerSkill[]) System.Enum.GetValues(typeof(PlayerSkill));
-
+        
         RepositionActiveChildren();
     }
     public void LearnSkill(PlayerSkill skill)
@@ -42,13 +33,17 @@ public class SkillManager : MonoBehaviour
                 dashUI.gameObject.SetActive(true);
                 NoticeManager.Instance.Notify(2);
                 break;
-            case(PlayerSkill.WirlWind):
+            
+            case(PlayerSkill.HolyShield):
+                shieldUI.gameObject.SetActive(true);
+                NoticeManager.Instance.Notify(3);
+                break;
+
+            case (PlayerSkill.WirlWind):
                 whirlUI.gameObject.SetActive(true);
                 break;
-            case(PlayerSkill.HolyShiled):
-                shieldUI.gameObject.SetActive(true);
-                break;
-            case(PlayerSkill.VampireSpirit):
+
+            case (PlayerSkill.VampireSpirit):
                 vampireUI.gameObject.SetActive(true);
                 break;    
         }
