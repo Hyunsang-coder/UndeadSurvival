@@ -44,7 +44,7 @@ public class NoticeManager : MonoBehaviour
                 noticeText = "Congrats!\nWoman unlocked.";
                 break;
             case(2):
-                noticeText = "Congrats!\nDash unlocked.";
+                noticeText = "Dash unlocked.\nPress Space.";
                 break;
             case(3):
                 noticeText = "Congrats!\nWhirlWind unlocked.";

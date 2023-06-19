@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     SpriteRenderer spriter;
     float knockBackForce = 3.4f;
 
+    WaitForSeconds waitTime;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         collid = GetComponent<Collider2D>();
         
+        waitTime = new WaitForSeconds(0.7f);
     }
 
     private void OnEnable()
@@ -101,6 +103,7 @@ public class Enemy : MonoBehaviour
             if (!GameManager.Instance.isGameLive) return;
             
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+            StartCoroutine(DeadCouroutine());
         }
     }
 
@@ -119,5 +122,12 @@ public class Enemy : MonoBehaviour
     {
 
         gameObject.SetActive(false);
+    }
+
+
+    IEnumerator DeadCouroutine()
+    {
+        yield return waitTime;
+        Dead();
     }
 }
