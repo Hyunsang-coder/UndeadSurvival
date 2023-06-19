@@ -29,11 +29,17 @@ public class Player : MonoBehaviour
 
     PlayerControl inputAction;
     public float dashForce = 10f;
-    public float dashCoolDown = 0.3f;
+    float dashDuration = 0.3f;
 
-    public float dashStamina = 5f;
+    public float dashTimer = 0f;
 
-    public float stamina = 10f; 
+    public float dashCoolTime = 7f; 
+
+    [Header("PlayerSkills")]
+    public bool dashLearned;
+    public bool whirlWindLearned;
+    public bool holyShieldLarned;
+    public bool vampireSpiritLearned;
 
     private void OnEnable() {
         anim.runtimeAnimatorController = animControllers[GameManager.Instance.playerID];
@@ -49,6 +55,8 @@ public class Player : MonoBehaviour
         inputAction.Player.Dash.performed += Dash;
         inputAction.Player.Dash.Enable();
 
+
+        SkillManager.Instance.skillUpdate += UpdatePlayerSkill;
         
     }
     private void Awake() 
@@ -62,6 +70,28 @@ public class Player : MonoBehaviour
 
         hitEffectTimer = hitEffectMaxTime;
     }
+
+    void UpdatePlayerSkill(SkillManager.PlayerSkill skill){
+        
+        switch(skill)
+        {
+            case(SkillManager.PlayerSkill.Dash):
+                dashLearned = true;
+                dashTimer = dashCoolTime;
+                break;
+            case(SkillManager.PlayerSkill.WirlWind):
+                whirlWindLearned = true;
+                break;
+            case(SkillManager.PlayerSkill.HolyShiled):
+                holyShieldLarned = true;
+                break;
+            case(SkillManager.PlayerSkill.VampireSpirit):
+                vampireSpiritLearned = true;
+                break;    
+        }
+    }
+
+
     void Start()
     {
         shootingTimer = shootingTimer * playerData[GameManager.Instance.playerID].shootingSpeed;
@@ -72,7 +102,7 @@ public class Player : MonoBehaviour
     bool isHit;
     private void Update() {
         hitEffectTimer +=Time.deltaTime;
-        stamina += Time.deltaTime;
+        dashTimer += Time.deltaTime;
         
         isHit = (hitEffectTimer < hitEffectMaxTime)? true: false;
 
@@ -172,7 +202,8 @@ public class Player : MonoBehaviour
     */
     void Dash(InputAction.CallbackContext context)
     {
-        if (isDashing || stamina < dashStamina) return;
+        if (!dashLearned || isDashing || dashTimer < dashCoolTime) return;
+        dashTimer = 0;
 
         StartCoroutine(DashCoroutine());
     }
@@ -180,7 +211,6 @@ public class Player : MonoBehaviour
     private IEnumerator DashCoroutine()
     {
         isDashing = true;
-        stamina -= dashStamina;
         Vector2 dashDir;
         if (inputVector == Vector2.zero)
         {
@@ -192,7 +222,7 @@ public class Player : MonoBehaviour
         }
         
         // dash for 0.2 seconds
-        for (float t = 0; t < dashCoolDown; t += Time.deltaTime)
+        for (float t = 0; t < dashDuration; t += Time.deltaTime)
         {
             transform.position += (Vector3)(dashDir * dashForce * Time.deltaTime);
             yield return null;  // wait until the next frame

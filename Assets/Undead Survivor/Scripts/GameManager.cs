@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayBGM(true);
     }
 
-    
+    bool dashlearned;
     private void Update()
     {
         if(!isGameLive) return;
@@ -83,13 +83,22 @@ public class GameManager : MonoBehaviour
 
         if (hasKilledMany && hasFinishedGame) return;
 
-        if (kill == 3 && !hasKilledMany)
+        if (kill == 10 && !hasKilledMany)
         {
             OnMeetingUnlockCondition.Invoke(0);
             hasKilledMany = true;
+
+            
+            Debug.Log("learned Dash!");
         }
 
-        if (GameTime > 10f && !hasFinishedGame)
+        if (kill == 5 && !dashlearned)
+        {
+            dashlearned = true;
+            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.Dash);
+        }
+
+        if (GameTime > 30f && !hasFinishedGame)
         {
             OnMeetingUnlockCondition.Invoke(1);
             hasFinishedGame = true;

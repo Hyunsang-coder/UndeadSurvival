@@ -72,7 +72,7 @@ AnimationClip:
   - time: 1.0833334
     functionName: Dead
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: 2e775070e438d444e9acecb73adf25c4, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

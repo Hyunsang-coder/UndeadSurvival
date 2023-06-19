@@ -6,28 +6,31 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] Transform[] spawnPoints;
     // SpawnData도 MonoBehavior에서 상속된 컴포넌트가 아니기에 GetComponents쓸 수 없음.
-    [SerializeField] SpawnData[] spawnData;
-    [SerializeField] float levelTime;
-    float spawnTimer;
-    float stageTimer;
+    [SerializeField]float spawnTimer;
+    [SerializeField]float stageTimer;
 
     [SerializeField] float stageDuration = 10f; 
+    
+
+    [SerializeField]int stageLevel;
+
+    [SerializeField]SpawnData enemySpawnData;
+
     bool isLevelingUp;
 
-    int level;
-
-    SpawnData enemySpawnData;
 
     private void Awake()
     {
         spawnPoints = GetComponentsInChildren<Transform>();
         //levelTime = GameManager.Instance.MaxGameTime / spawnData.Length;
         
-        enemySpawnData = GenerateSpawnData(level);
+        enemySpawnData = GenerateSpawnData(stageLevel);
     }
 
     private void Start() {
         SpawnEnemy(enemySpawnData);   
+
+        stageDuration = (float) GameManager.Instance.MaxGameTime / GameManager.Instance.NextLvXP.Length;
     }
     void Update()
     {
@@ -46,13 +49,13 @@ public class Spawner : MonoBehaviour
 
         if (stageTimer > stageDuration)
         {
-            level ++;   
+            stageLevel ++;   
             isLevelingUp = true;
 
             if (isLevelingUp)
             {
                 isLevelingUp = false;
-                enemySpawnData = GenerateSpawnData(level); 
+                enemySpawnData = GenerateSpawnData(stageLevel); 
                 stageTimer = 0;               
             }
             //SpawnEnemy();
@@ -78,7 +81,7 @@ public class Spawner : MonoBehaviour
     private SpawnData GenerateSpawnData(int level)
     {   
         SpawnData newData = new SpawnData();
-        newData.enemyType = level%2;
+        newData.enemyType = level% 4; // 4는 에너미 종류
         newData.spawnTime = Mathf.Clamp(newData.spawnTime - (0.1f * level)/2f, 0.3f, newData.spawnTime);
 
         if (level ==0 || level % 5 != 0)
