@@ -32,20 +32,19 @@ public class GameManager : MonoBehaviour
     public float health;
     public float maxHealth = 100f;
     public int playerID;
-
-
-
+    [SerializeField] int unlockCondition_1 = 100;   
     public int playerLevel;
 
     
     public int[] NextLvXP;
 
-    bool hasKilledMany;
-    bool hasFinishedGame;
+    bool metCondition_1;
 
     bool dashLearned;
     bool shieldLearned;
     bool whirlWindLearned;
+
+    
 
     void Awake()
     {
@@ -88,44 +87,38 @@ public class GameManager : MonoBehaviour
         CheckAchievements();
     }
 
+    
     private void CheckAchievements()
     {
         // Character unlocked
-        if (hasKilledMany && hasFinishedGame) return;
-
-
-        if (kill == 10 && !hasKilledMany)
+        if (kill == unlockCondition_1 && !metCondition_1)
         {
+            metCondition_1 = true;
             OnMeetingUnlockCondition.Invoke(0);
-            hasKilledMany = true;
         }
 
-
-        if (GameTime > 30f && !hasFinishedGame)
-        {
-            OnMeetingUnlockCondition.Invoke(1);
-            hasFinishedGame = true;
-        }
 
 
         // skill unlocked 
-        if (kill == 1 && !dashLearned)
+        if (kill == 10 && !dashLearned)
         {
             dashLearned = true;
             SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.Dash);
         }
 
-        if (kill == 3 && !shieldLearned)
+        if (kill == 20 && !shieldLearned)
         {
             shieldLearned = true;
             SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.HolyShield);
         }
 
-        if (kill == 20 && !whirlWindLearned)
+        /*
+        if (kill == 30 && !whirlWindLearned)
         {
             whirlWindLearned = true;
             SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.WirlWind);
         }
+        */
 
 
     }
@@ -195,12 +188,15 @@ public class GameManager : MonoBehaviour
 
 
     public void Victory(){
+        
         StartCoroutine(VictoryCoroutine());
     }
 
     IEnumerator VictoryCoroutine(){
         isGameLive =false;
         enemyCleaner.SetActive(true);
+
+        OnMeetingUnlockCondition.Invoke(1);
         
         yield return new WaitForSeconds(1f);
         StopGame();

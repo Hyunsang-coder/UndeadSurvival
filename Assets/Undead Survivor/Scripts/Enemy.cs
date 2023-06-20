@@ -22,6 +22,12 @@ public class Enemy : MonoBehaviour
     float knockBackForce = 3.4f;
 
     WaitForSeconds waitTime;
+
+
+
+    float selfCleanerTime= 10f;
+    float timer;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -65,6 +71,16 @@ public class Enemy : MonoBehaviour
         if(!GameManager.Instance.isGameLive) return;
         
         spriter.flipX = target.position.x < rigid.position.x;
+
+        timer += Time.deltaTime;
+
+        if (timer > selfCleanerTime)
+        {
+            timer = 0;
+            if (health <= 0){
+                Dead();
+            }
+        }
     }
     
     public void EnemyInint(SpawnData data)
@@ -90,7 +106,7 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("Hit");
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
         }
-        else
+        else if (health <= 0)
         {
             isLive = false;
             collid.enabled = false;

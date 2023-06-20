@@ -12,6 +12,7 @@ TagManager:
   - StartMenu
   - HUD
   - EnemyArea
+  - Shield
   layers:
   - Default
   - TransparentFX

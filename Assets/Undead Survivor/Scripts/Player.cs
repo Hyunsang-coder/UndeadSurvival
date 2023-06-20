@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
     float hitEffectMaxTime = 0.3f;
 
     PlayerControl inputAction;
+
+    [SerializeField] GameObject shield;
     
 
     [Header("PlayerSkills")]
@@ -68,6 +70,8 @@ public class Player : MonoBehaviour
         inputAction.Player.Shield.Enable();
 
         SkillManager.Instance.skillUpdate += UpdatePlayerSkill;
+
+        shield = transform.Find("Shield").gameObject;
         
     }
     private void Awake() 
@@ -250,6 +254,7 @@ public class Player : MonoBehaviour
 
     void UseShield(InputAction.CallbackContext context)
     {
+        if (!holyShieldLarned || isShielding || shieldTimer < shieldCoolTime) return;
         StartCoroutine(ShieldCoroutine());
     }
 
@@ -257,9 +262,24 @@ public class Player : MonoBehaviour
     {
         isShielding = true;
         shieldTimer = 0;
-        yield return new WaitForSeconds(shieldDuration);
 
-        isDashing = false;
+        if(shield)
+        {
+            shield.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("Shield object is empty!");
+        }
+        
+        yield return new WaitForSeconds(shieldDuration);
+        
+        if(shield)
+        {
+            shield.gameObject.SetActive(false);
+        }
+
+        isShielding = false;
 
     }
 

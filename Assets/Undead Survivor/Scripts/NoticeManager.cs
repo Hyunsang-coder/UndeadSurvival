@@ -37,16 +37,16 @@ public class NoticeManager : MonoBehaviour
         switch(index)
         {
             case(0):
-                noticeText = "Congrats!\nMan unlocked.";
+                noticeText = "Congrats!\nCharacter unlocked.";
                 break;
             case(1):
-                noticeText = "Congrats!\nWoman unlocked.";
+                noticeText = "Congrats!\nCharacter unlocked.";
                 break;
             case(2):
-                noticeText = "Dash unlocked.\nPress Space.";
+                noticeText = "Skill(Dash) unlocked.\nPress <Space>.";
                 break;
             case(3):
-                noticeText = "HolyShield unlocked.\nPress Q.";
+                noticeText = "(Shield) unlocked.\nPress <Q>.";
                 break;
         }
         
