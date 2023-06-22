@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Result : MonoBehaviour
+public class ResultMenu : MonoBehaviour
 {
     public GameObject[] titles;
 

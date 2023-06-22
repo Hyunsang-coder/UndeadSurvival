@@ -139,7 +139,7 @@ public class Item : MonoBehaviour
                 break;
         }
 
-        GameObject.FindObjectOfType<LevelUp>().Hide();
+        GameObject.FindObjectOfType<LevelUpMenu>().Hide();
     }
 
 }

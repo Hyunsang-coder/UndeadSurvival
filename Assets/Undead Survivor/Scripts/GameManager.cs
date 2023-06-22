@@ -8,21 +8,18 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public event Action<int> OnMeetingUnlockCondition;
 
     [Header("GameObjects")]
     [SerializeField] Player player;
     [SerializeField] PoolManager poolManager;
-    public Result resultMenu;
+    public ResultMenu resultMenu;
     public GameObject enemyCleaner;
 
 
     [Header("Game Control")]
     public float GameTime;
     public float MaxGameTime = 30f;
-
-    public LevelUp LevelUpModal;
-
+    public LevelUpMenu LevelUpModal;
     public bool isGameLive = false;
 
     
@@ -32,42 +29,22 @@ public class GameManager : MonoBehaviour
     public float health;
     public float maxHealth = 100f;
     public int playerID;
-    [SerializeField] int unlockCondition_1 = 100;   
     public int playerLevel;
-
     
     public int[] NextLvXP;
-
-    bool metCondition_1;
-
-    bool dashLearned;
-    bool shieldLearned;
-    bool whirlWindLearned;
 
     
 
     void Awake()
     {
         Instance = this;
-        LevelUpModal = FindObjectOfType<LevelUp>(true).GetComponent<LevelUp>();
-        resultMenu = FindObjectOfType<Result>(true).GetComponent<Result>();
+        LevelUpModal = FindObjectOfType<LevelUpMenu>(true).GetComponent<LevelUpMenu>();
+        resultMenu = FindObjectOfType<ResultMenu>(true).GetComponent<ResultMenu>();
 
         isGameLive = false;
 
     }
 
-    public void GameStart(int playerID) {
-        health = maxHealth;
-        this.playerID = playerID;
-
-        player.gameObject.SetActive(true);
-        LevelUpModal.Select(playerID%2);
-
-        ResumeGame();
-
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
-        AudioManager.Instance.PlayBGM(true);
-    }
 
     
     private void Update()
@@ -84,44 +61,21 @@ public class GameManager : MonoBehaviour
             Victory();
         }
 
-        CheckAchievements();
     }
 
-    
-    private void CheckAchievements()
-    {
-        // Character unlocked
-        if (kill == unlockCondition_1 && !metCondition_1)
-        {
-            metCondition_1 = true;
-            OnMeetingUnlockCondition.Invoke(0);
-        }
+    public void GameStart(int playerID) {
+        health = maxHealth;
+        this.playerID = playerID;
 
+        player.gameObject.SetActive(true);
+        LevelUpModal.Select(playerID%2);
 
+        ResumeGame();
 
-        // skill unlocked 
-        if (kill == 10 && !dashLearned)
-        {
-            dashLearned = true;
-            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.Dash);
-        }
-
-        if (kill == 20 && !shieldLearned)
-        {
-            shieldLearned = true;
-            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.HolyShield);
-        }
-
-        /*
-        if (kill == 30 && !whirlWindLearned)
-        {
-            whirlWindLearned = true;
-            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.WirlWind);
-        }
-        */
-
-
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+        AudioManager.Instance.PlayBGM(true);
     }
+
 
     public Player Player
     {
@@ -196,7 +150,7 @@ public class GameManager : MonoBehaviour
         isGameLive =false;
         enemyCleaner.SetActive(true);
 
-        OnMeetingUnlockCondition.Invoke(1);
+        AchievementTracker.Instance.UnlockSecondCharacter();
         
         yield return new WaitForSeconds(1f);
         StopGame();

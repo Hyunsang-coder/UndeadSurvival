@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Reposition : MonoBehaviour
+public class InfiniteMapSystem : MonoBehaviour
 {
     Collider2D coll2D;
 

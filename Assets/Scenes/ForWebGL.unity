@@ -1630,7 +1630,6 @@ MonoBehaviour:
   health: 0
   maxHealth: 100
   playerID: 0
-  unlockCondition_1: 100
   playerLevel: 0
   NextLvXP: 0300000005000000070000000a0000000f000000140000001400000014000000140000001400000014000000140000001400000014000000140000001400000014000000140000001e0000001e000000
 --- !u!4 &290745842
@@ -3221,7 +3220,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 8.333333
+  orthographic size: 8.577778
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -28790,6 +28789,12 @@ MonoBehaviour:
   unlockedCharacters:
   - {fileID: 427849831}
   - {fileID: 404432979}
+  killsToUnlockCharacter1: 100
+  metCondition1: 0
+  dashLearned: 0
+  shieldLearned: 0
+  hasUnlockSecondCharacter: 0
+  hasUnlockFirstCharacter: 0
 --- !u!4 &2081676456
 Transform:
   m_ObjectHideFlags: 0

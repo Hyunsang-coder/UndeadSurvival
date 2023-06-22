@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelUp : MonoBehaviour
+public class LevelUpMenu : MonoBehaviour
 {
     RectTransform rect;
     public Item[] items;

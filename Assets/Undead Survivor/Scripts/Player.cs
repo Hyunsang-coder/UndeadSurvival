@@ -52,6 +52,19 @@ public class Player : MonoBehaviour
     public float shieldCoolTime = 10f;
 
 
+
+    private void Awake() 
+    {
+        rigid = GetComponent<Rigidbody2D>();
+        spriteRender = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
+        // include inactive components 
+        hands = GetComponentsInChildren<Hand>(true);
+
+        hitEffectTimer = hitEffectMaxTime;
+    }
+
     private void OnEnable() {
         anim.runtimeAnimatorController = animControllers[GameManager.Instance.playerID];
         
@@ -69,45 +82,11 @@ public class Player : MonoBehaviour
         inputAction.Player.Shield.performed += UseShield;
         inputAction.Player.Shield.Enable();
 
-        SkillManager.Instance.skillUpdate += UpdatePlayerSkill;
+        AchievementTracker.Instance.onLearningSkill += UpdatePlayerSkill;
 
         shield = transform.Find("Shield").gameObject;
         
     }
-    private void Awake() 
-    {
-        rigid = GetComponent<Rigidbody2D>();
-        spriteRender = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-        scanner = GetComponent<Scanner>();
-        // include inactive components 
-        hands = GetComponentsInChildren<Hand>(true);
-
-        hitEffectTimer = hitEffectMaxTime;
-    }
-
-    void UpdatePlayerSkill(SkillManager.PlayerSkill skill){
-        
-        switch(skill)
-        {
-            case(SkillManager.PlayerSkill.Dash):
-                dashLearned = true;
-                dashTimer = dashCoolTime;
-                break;
-            
-            case(SkillManager.PlayerSkill.HolyShield):
-                holyShieldLarned = true;
-                shieldTimer = shieldCoolTime;
-                break;
-            case (SkillManager.PlayerSkill.WirlWind):
-                whirlWindLearned = true;
-                break;
-            case (SkillManager.PlayerSkill.VampireSpirit):
-                vampireSpiritLearned = true;
-                break;    
-        }
-    }
-
     
 
     void Start()
@@ -133,16 +112,11 @@ public class Player : MonoBehaviour
         {
             spriteRender.color = Color.white;
         }
-
         
     }
 
     //여기서 InputValue는 인풋시스템에서 자동으로 넘겨 줌
-    void Move(InputAction.CallbackContext context)
-    {
-        inputVector = context.ReadValue<Vector2>().normalized;
-    }
-
+    
 
     
     private void FixedUpdate()
@@ -162,8 +136,14 @@ public class Player : MonoBehaviour
 
         anim.SetFloat("Speed", inputVector.magnitude);
 
-
     }
+
+    void Move(InputAction.CallbackContext context)
+    {
+        inputVector = context.ReadValue<Vector2>().normalized;
+    }
+
+
 
     private void OnCollisionStay2D(Collision2D other) {
         if (!GameManager.Instance.isGameLive) return;
@@ -187,6 +167,29 @@ public class Player : MonoBehaviour
             GameManager.Instance.GameOver();
         }
     }
+
+     void UpdatePlayerSkill(int skillIndex){
+        
+        switch(skillIndex)
+        {
+            case(0):
+                dashLearned = true;
+                dashTimer = dashCoolTime;
+                break;
+            
+            case(1):
+                holyShieldLarned = true;
+                shieldTimer = shieldCoolTime;
+                break;
+            case (2):
+                whirlWindLearned = true;
+                break;
+            case (3):
+                vampireSpiritLearned = true;
+                break;    
+        }
+    }
+
 
     
     public void MoveSpeedUp(float percentage)

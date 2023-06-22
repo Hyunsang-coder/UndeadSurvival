@@ -1,47 +1,93 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using System;
 
 public class SkillUI : MonoBehaviour
 {
-    [SerializeField] Player player;
-    [SerializeField] float  coolTimeIndicator;
-    [SerializeField] Image image;
+    public static SkillUI Instance;
 
-    public SkillManager.PlayerSkill skill;
+    public enum PlayerSkill{
+        Dash, WirlWind, HolyShield, VampireSpirit
+    }
 
-    void Start()
-    {
+    public GameObject dashUI;
+    public GameObject shieldUI;
+    public GameObject whirlUI;
+    public GameObject vampireUI;
+
+    private float spacing = 15f;
+    
+
+    private void Awake() {
+        Instance = this;
         
+        RepositionSkillIndicators();
     }
-
-    private void OnEnable() {
-        player =  GameManager.Instance.Player;    
-        image = GetComponent<Image>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        switch (skill)
+    public void LearnSkill(PlayerSkill skill)
+    {   
+        switch(skill)
         {
-            case SkillManager.PlayerSkill.Dash:
-
-                coolTimeIndicator = player.GetDashCoolTimeIndicator();
+            case(PlayerSkill.Dash):
+                dashUI.gameObject.SetActive(true);
+                NoticeSystem.Instance.Notify(2);
+                break;
+            
+            case(PlayerSkill.HolyShield):
+                shieldUI.gameObject.SetActive(true);
+                NoticeSystem.Instance.Notify(3);
                 break;
 
-            case SkillManager.PlayerSkill.HolyShield:
-
-                coolTimeIndicator = player.GetShieldCoolTimeIndicator();
+            case (PlayerSkill.WirlWind):
+                whirlUI.gameObject.SetActive(true);
                 break;
+
+            case (PlayerSkill.VampireSpirit):
+                vampireUI.gameObject.SetActive(true);
+                break;    
         }
         
+        //skillUpdate?.Invoke(skill);
+        RepositionSkillIndicators();
+
 
     }
 
-    void LateUpdate() {
+     void RepositionSkillIndicators()
+    {
+        List<Transform> activeChildren = new List<Transform>();
 
-        image.fillAmount = 1- coolTimeIndicator;
+        // Find active children
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.activeInHierarchy)
+            {
+                activeChildren.Add(child);
+            }
+        }
+
+        // If there's only one active child, center it
+        if (activeChildren.Count == 1)
+        {
+            activeChildren[0].localPosition = Vector3.zero;
+        }
+        // If there's more than one, space them evenly
+        else if (activeChildren.Count > 1)
+        {
+            // Calculate total width
+            float totalWidth = spacing * (activeChildren.Count - 1);
+
+            // Start from the leftmost position
+            float currentX = -totalWidth / 2;
+
+            for (int i = 0; i < activeChildren.Count; i++)
+            {
+                // Set the child's position
+                activeChildren[i].localPosition = new Vector3(currentX, 0, 0);
+
+                // Move to the next position
+                currentX += spacing;
+            }
+        }
     }
 }

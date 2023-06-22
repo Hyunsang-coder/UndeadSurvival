@@ -2,21 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class NoticeManager : MonoBehaviour
+public class NoticeSystem : MonoBehaviour
 {
-    public static NoticeManager Instance;
+    public static NoticeSystem Instance;
     private void Awake() {
         Instance = this;
-    }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Notify(int index)
