@@ -37,7 +37,15 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
+        if (Instance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         LevelUpModal = FindObjectOfType<LevelUpMenu>(true).GetComponent<LevelUpMenu>();
         resultMenu = FindObjectOfType<ResultMenu>(true).GetComponent<ResultMenu>();
 

@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     Rigidbody2D rigid;
 
     float timer;
-    [SerializeField] float bulletLifetime = 4f;
+    [SerializeField] float bulletLifetime = 3f;
 
 
     private void Awake()

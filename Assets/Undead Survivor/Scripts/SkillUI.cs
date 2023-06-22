@@ -1,15 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class SkillUI : MonoBehaviour
 {
     public static SkillUI Instance;
-
-    public enum PlayerSkill{
-        Dash, WirlWind, HolyShield, VampireSpirit
-    }
 
     public GameObject dashUI;
     public GameObject shieldUI;
@@ -24,7 +19,7 @@ public class SkillUI : MonoBehaviour
         
         RepositionSkillIndicators();
     }
-    public void LearnSkill(PlayerSkill skill)
+    public void DisplaySkill(PlayerSkill skill)
     {   
         switch(skill)
         {
@@ -33,17 +28,19 @@ public class SkillUI : MonoBehaviour
                 NoticeSystem.Instance.Notify(2);
                 break;
             
-            case(PlayerSkill.HolyShield):
+            case(PlayerSkill.Shield):
                 shieldUI.gameObject.SetActive(true);
                 NoticeSystem.Instance.Notify(3);
                 break;
 
-            case (PlayerSkill.WirlWind):
+            case (PlayerSkill.WhirlWind):
                 whirlUI.gameObject.SetActive(true);
+                NoticeSystem.Instance.Notify(4);
                 break;
 
-            case (PlayerSkill.VampireSpirit):
+            case (PlayerSkill.Vampire):
                 vampireUI.gameObject.SetActive(true);
+                NoticeSystem.Instance.Notify(5);
                 break;    
         }
         

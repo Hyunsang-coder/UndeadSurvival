@@ -11,6 +11,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] int weaponCount;
     [SerializeField] int pierceCount;
 
+    float rotationSpeed = 150;
+
     float timer;
     Player player;
 
@@ -25,7 +27,8 @@ public class Weapon : MonoBehaviour
         
     }
 
-    public  void UpdateShootSpeed(float speed){
+
+    public void UpdateShootSpeed(float speed){
         this.shootingTimer = speed;
     }
 
@@ -37,7 +40,7 @@ public class Weapon : MonoBehaviour
         {
             // shovel
             case 0:
-                transform.Rotate(Vector3.back, 150 * Time.deltaTime);
+                transform.Rotate(Vector3.back, rotationSpeed * Time.deltaTime);
                 break;
 
             // bullet
@@ -83,6 +86,7 @@ public class Weapon : MonoBehaviour
             // 무기가 삽일 때
             case 0:
                 Placement();
+                player.hasShovel = true;
                 break;
 
             // 무기가 총일 때 
@@ -107,6 +111,7 @@ public class Weapon : MonoBehaviour
             case 0:
                 weaponCount += count;
                 Placement();
+
                 break;
 
             // bullet
@@ -168,6 +173,13 @@ public class Weapon : MonoBehaviour
 
     private void OnDisable() {
         player.OnShootingSpeedChanged -= UpdateShootSpeed;
+    }
+
+    public void FasterRotation(float multiplier)
+    {   
+
+        rotationSpeed *= multiplier;
+
     }
 
 }

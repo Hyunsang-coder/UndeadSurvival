@@ -27,8 +27,16 @@ public class AudioManager : MonoBehaviour
 
     public enum Sfx {Dead, Hit, LevelUp=3, Lose, Melee, Range=7, Select, Win }
 
-    private void Awake() {
-        Instance = this;
+    private void Awake() 
+    {
+        if (Instance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
 
         Init();
     }

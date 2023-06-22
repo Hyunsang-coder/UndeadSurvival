@@ -17,7 +17,7 @@ public class RepositionEnemies : MonoBehaviour
         // 다른 오브젝트와 콜리전 시 return
         if (!collision.CompareTag("EnemyArea")) return;
         
-        Debug.Log("Enmemy repositions step1" + ": " + transform.position.ToString());
+        //Debug.Log("Enmemy repositions step1" + ": " + transform.position.ToString());
 
         Vector3 playerPos = GameManager.Instance.Player.transform.position;
         Vector3 transformPos = transform.position;
@@ -27,7 +27,7 @@ public class RepositionEnemies : MonoBehaviour
             {
                 float distance = Vector3.Distance(playerPos, transformPos);
                 transform.Translate((playerPos - transform.position).normalized * distance*2 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f));
-                Debug.Log("Enmemy repositions step2" + ": " + transform.position.ToString());
+                //Debug.Log("Enmemy repositions step2" + ": " + transform.position.ToString());
             }
         }
 }

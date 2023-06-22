@@ -9,12 +9,7 @@ public class SkillIndicator : MonoBehaviour
     [SerializeField] float  coolTimeIndicator;
     [SerializeField] Image image;
 
-    public SkillUI.PlayerSkill skill;
-
-    void Start()
-    {
-        
-    }
+    public PlayerSkill skill;
 
     private void OnEnable() {
         player =  GameManager.Instance.Player;    
@@ -26,14 +21,16 @@ public class SkillIndicator : MonoBehaviour
     {
         switch (skill)
         {
-            case SkillUI.PlayerSkill.Dash:
-
-                coolTimeIndicator = player.GetDashCoolTimeIndicator();
+            case PlayerSkill.Dash:
+                coolTimeIndicator = player.GetSkillTimeIndicator(PlayerSkill.Dash);
                 break;
 
-            case SkillUI.PlayerSkill.HolyShield:
+            case PlayerSkill.Shield:
 
-                coolTimeIndicator = player.GetShieldCoolTimeIndicator();
+                coolTimeIndicator = player.GetSkillTimeIndicator(PlayerSkill.Shield);
+                break;
+            case PlayerSkill.WhirlWind:
+                coolTimeIndicator = player.GetSkillTimeIndicator(PlayerSkill.WhirlWind);
                 break;
         }
         
@@ -42,6 +39,6 @@ public class SkillIndicator : MonoBehaviour
 
     void LateUpdate() {
 
-        image.fillAmount = 1- coolTimeIndicator;
+        image.fillAmount = 1 - coolTimeIndicator;
     }
 }

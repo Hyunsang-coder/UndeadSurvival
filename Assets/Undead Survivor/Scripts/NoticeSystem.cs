@@ -36,7 +36,16 @@ public class NoticeSystem : MonoBehaviour
                 noticeText = "Skill(Dash) unlocked.\nPress <Space>.";
                 break;
             case(3):
-                noticeText = "(Shield) unlocked.\nPress <Q>.";
+                noticeText = "Skil(Shield) unlocked.\nPress <Q>.";
+                break;
+            case(4):
+                noticeText = "Skill(WhirWind) unlocked.\nPress <E>.";
+                break;
+            case(5):
+                noticeText = "Skill(Vampire) unlocked.\nPress <R>.";
+                break;
+            case(10):
+                noticeText = "Need shovels to use skill.";
                 break;
         }
         

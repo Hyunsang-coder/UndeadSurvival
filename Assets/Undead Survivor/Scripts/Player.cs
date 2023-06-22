@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     public PlayerData[] playerData;
 
-    
+    public bool hasShovel;
     public float shootingTimer = 0.3f;
 
     public float moveSpeed = 3f;
@@ -31,13 +31,15 @@ public class Player : MonoBehaviour
     PlayerControl inputAction;
 
     [SerializeField] GameObject shield;
+
+    [SerializeField] Weapon shovel;
     
 
     [Header("PlayerSkills")]
     public bool dashLearned;
     public bool whirlWindLearned;
     public bool holyShieldLarned;
-    public bool vampireSpiritLearned;
+    public bool vampireLearned;
 
 
     bool isDashing;
@@ -47,10 +49,14 @@ public class Player : MonoBehaviour
     public float dashCoolTime = 7f;
     
     bool isShielding;
-    float shieldDuration = 3f;
+    public float shieldDuration = 5f;
     public float shieldTimer = 0f;
     public float shieldCoolTime = 10f;
 
+    bool isWhirWind;
+    public float whirWindDuration = 5f;
+    public float whirWindTimer = 0f;
+    public float whirWindCoolTime = 10f;
 
 
     private void Awake() 
@@ -82,6 +88,10 @@ public class Player : MonoBehaviour
         inputAction.Player.Shield.performed += UseShield;
         inputAction.Player.Shield.Enable();
 
+        inputAction.Player.WhirlWind.performed += WhirlWind;
+        inputAction.Player.WhirlWind.Enable();
+
+
         AchievementTracker.Instance.onLearningSkill += UpdatePlayerSkill;
 
         shield = transform.Find("Shield").gameObject;
@@ -101,6 +111,7 @@ public class Player : MonoBehaviour
         hitEffectTimer +=Time.deltaTime;
         dashTimer += Time.deltaTime;
         shieldTimer += Time.deltaTime;
+        whirWindTimer += Time.deltaTime;
         
         isHit = (hitEffectTimer < hitEffectMaxTime)? true: false;
 
@@ -168,24 +179,25 @@ public class Player : MonoBehaviour
         }
     }
 
-     void UpdatePlayerSkill(int skillIndex){
+     void UpdatePlayerSkill(PlayerSkill skill){
         
-        switch(skillIndex)
+        switch(skill)
         {
-            case(0):
+            case(PlayerSkill.Dash):
                 dashLearned = true;
                 dashTimer = dashCoolTime;
                 break;
             
-            case(1):
+            case(PlayerSkill.Shield):
                 holyShieldLarned = true;
                 shieldTimer = shieldCoolTime;
                 break;
-            case (2):
+            case (PlayerSkill.WhirlWind):
                 whirlWindLearned = true;
+                whirWindTimer = whirWindCoolTime;
                 break;
-            case (3):
-                vampireSpiritLearned = true;
+            case (PlayerSkill.Vampire):
+                vampireLearned = true;
                 break;    
         }
     }
@@ -237,6 +249,7 @@ public class Player : MonoBehaviour
         isDashing = false;
     }
 
+/*
     public float GetDashCoolTimeIndicator()
     {
         if (dashTimer < dashCoolTime)
@@ -253,6 +266,48 @@ public class Player : MonoBehaviour
             return shieldTimer / shieldCoolTime;
         }
         else return 1f;
+    }
+
+    public float GetWhirWindTimeIndicator()
+    {
+        if (whirWindTimer < whirWindCoolTime)
+        {
+            return whirWindTimer / whirWindCoolTime;
+        }
+        else return 1f;
+    }
+
+    */
+
+    public float GetSkillTimeIndicator(PlayerSkill skill)
+    {
+        switch(skill)
+        {
+            case(PlayerSkill.Dash):
+                if (dashTimer < dashCoolTime)
+                {
+                    return dashTimer / dashCoolTime;
+                }
+                else return 1f;
+            case(PlayerSkill.Shield):
+                 if (shieldTimer < shieldCoolTime)
+                {
+                    return shieldTimer / shieldCoolTime;
+                }
+                else return 1f;
+            case(PlayerSkill.WhirlWind):
+                if (whirWindTimer < whirWindCoolTime)
+                {
+                    return whirWindTimer / whirWindCoolTime;
+                }
+                else return 1f;
+            case(PlayerSkill.Vampire):
+                break;
+            default:
+                break;
+        }
+
+        return 1f;
     }
 
     void UseShield(InputAction.CallbackContext context)
@@ -284,6 +339,32 @@ public class Player : MonoBehaviour
 
         isShielding = false;
 
+    }
+
+    void WhirlWind(InputAction.CallbackContext context)
+    {
+        if (!whirlWindLearned || isWhirWind || whirWindTimer < whirWindCoolTime || !hasShovel) return;
+        shovel = transform.Find("Weapon0").GetComponent<Weapon>();
+        if (shovel == null ) return;
+
+        StartCoroutine(WhirWindCoroutine());
+    }
+
+    IEnumerator WhirWindCoroutine()
+    {
+        isWhirWind = true;
+        whirWindTimer = 0;
+        shovel.FasterRotation(2f);
+
+        if (shovel == null)
+        {
+            NoticeSystem.Instance.Notify(11);
+        }
+
+        yield return new WaitForSeconds(whirWindDuration);
+        shovel.FasterRotation(0.5f);
+
+        isWhirWind = false;
     }
 
 

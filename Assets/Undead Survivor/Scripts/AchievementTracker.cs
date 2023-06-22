@@ -3,30 +3,58 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
+public enum Character {UnlockedMan, UnlockedLady}
+public enum PlayerSkill {Dash, Shield, WhirlWind, Vampire}
+
 public class AchievementTracker : MonoBehaviour
 {
-    public static AchievementTracker Instance {get; private set;}
+    public static AchievementTracker Instance;
+    public event Action<Character> onUnlockingCharacter;
+    public event Action<PlayerSkill> onLearningSkill;
+
+
+
+    [Header("Game objects")]
     public GameObject [] lockedCharacters;
     public GameObject [] unlockedCharacters;
-
-    public event Action<int> onUnlockingCharacter;
-    public event Action<int> onLearningSkill;
-
-    enum Achieve {UnlockedMan, UnlockedLady}
-    Achieve[] achieves;
+    public SkillUI skillUI;
 
 
-    [SerializeField] int killsToUnlockCharacter1 = 100;
-    [SerializeField] bool metCondition1;
-    [SerializeField] bool dashLearned;
-    [SerializeField] bool shieldLearned;
     
-    [SerializeField] bool hasUnlockSecondCharacter;
-    [SerializeField] bool hasUnlockFirstCharacter;
+    Character[] characters;
 
-    private void Awake() {
-        Instance = this;
-        achieves = (Achieve[])Enum.GetValues(typeof(Achieve));
+    [Header("Character conditions")]
+    [SerializeField] int conditionForCharOne = 100;
+    [SerializeField] bool metConditionForCharOne;
+    [SerializeField] bool hasUnlockCharTwo;
+    [SerializeField] bool hasUnlockCharOne;
+
+
+
+    [Header("Skill conditions")]
+
+    [SerializeField] int conditionForDash = 10;
+    [SerializeField] bool learnedDash;
+    [SerializeField] int conditionForShield = 15;
+    [SerializeField] bool learnedShield;
+    [SerializeField] int conditionForWhirWind = 30;
+    [SerializeField] bool learnedWhirWind;
+    
+
+
+    private void Awake() 
+    {
+        if (Instance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+        characters = (Character[])Enum.GetValues(typeof(Character));
 
         if (!PlayerPrefs.HasKey("MyData"))
         {
@@ -35,13 +63,12 @@ public class AchievementTracker : MonoBehaviour
     }
 
 
-
     void Start()
     {   
         UnlockCharacter();   
         
-        Debug.Log(achieves[0].ToString() +" : " + PlayerPrefs.GetInt(achieves[0].ToString()));
-        Debug.Log(achieves[1].ToString() +" : " + PlayerPrefs.GetInt(achieves[1].ToString()));
+        Debug.Log(characters[0].ToString() +" : " + PlayerPrefs.GetInt(characters[0].ToString()));
+        Debug.Log(characters[1].ToString() +" : " + PlayerPrefs.GetInt(characters[1].ToString()));
         
     }
     void Init()
@@ -49,17 +76,17 @@ public class AchievementTracker : MonoBehaviour
         PlayerPrefs.SetInt("MyData", 1);
 
 
-        foreach(Achieve achive in achieves)
+        foreach(Character character in characters)
         {
-            PlayerPrefs.SetInt(achive.ToString(), 0);
+            PlayerPrefs.SetInt(character.ToString(), 0);
         }
     }
     
-    void AchiveMileStone(int index)
+    void AchieveCharacter(int index)
     {
-        if (PlayerPrefs.GetInt(achieves[index].ToString()) ==1) return;
+        if (PlayerPrefs.GetInt(characters[index].ToString()) ==1) return;
 
-        PlayerPrefs.SetInt(achieves[index].ToString(), 1);
+        PlayerPrefs.SetInt(characters[index].ToString(), 1);
         //Debug.Log(achieves[index].ToString() +" : " + PlayerPrefs.GetInt(achieves[index].ToString()));
 
         NoticeSystem.Instance.Notify(index);
@@ -70,13 +97,12 @@ public class AchievementTracker : MonoBehaviour
     {
         for(int i =0; i<lockedCharacters.Length; i++)
         {
-            string character = achieves[i].ToString();
+            string character = characters[i].ToString();
             bool isUnlock = PlayerPrefs.GetInt(character) == 1;
 
             
             lockedCharacters[i].SetActive(!isUnlock);
             unlockedCharacters[i].SetActive(isUnlock);
-
         }
         
     }
@@ -85,46 +111,55 @@ public class AchievementTracker : MonoBehaviour
         CheckAchievements();
     }
 
+    public void UnlockFirstCharacter()
+    {
+        if (hasUnlockCharOne) return;
+        AchieveCharacter(0);
+        hasUnlockCharOne = true;
+    }
     public void UnlockSecondCharacter()
     {
-        hasUnlockSecondCharacter = true;
-        AchiveMileStone(1);
+        if (hasUnlockCharTwo) return;
+        AchieveCharacter(1);
+        hasUnlockCharTwo = true;
     }
   
 
     private void CheckAchievements()
-    {
+    {   
+        float kills = GameManager.Instance.kill;
+
         // Character unlocked
-        if (GameManager.Instance.kill == killsToUnlockCharacter1 && !metCondition1)
+        if (kills == conditionForCharOne && !metConditionForCharOne)
         {
-            metCondition1 = true;
+            metConditionForCharOne = true;
             //OnMeetingUnlockCondition.Invoke(0);
             onUnlockingCharacter?.Invoke(0);
-            AchiveMileStone(0);
+            AchieveCharacter(0);
         }
 
         // skill unlocked 
-        if (GameManager.Instance.kill== 10 && !dashLearned)
+        if (kills == conditionForDash && !learnedDash)
         {
-            dashLearned = true;
-            SkillUI.Instance.LearnSkill(SkillUI.PlayerSkill.Dash);
-            onLearningSkill?.Invoke(0);
+            learnedDash = true;
+            skillUI.DisplaySkill(PlayerSkill.Dash);
+            onLearningSkill?.Invoke(PlayerSkill.Dash);
         }
 
-        if (GameManager.Instance.kill== 20 && !shieldLearned)
+        if (kills == conditionForShield && !learnedShield)
         {
-            shieldLearned = true;
-            SkillUI.Instance.LearnSkill(SkillUI.PlayerSkill.HolyShield);
-            onLearningSkill?.Invoke(1);
+            learnedShield = true;
+            skillUI.DisplaySkill(PlayerSkill.Shield);
+            onLearningSkill?.Invoke(PlayerSkill.Shield);
         }
 
-        /*
-        if (kill == 30 && !whirlWindLearned)
+        
+        if (kills == conditionForWhirWind && !learnedWhirWind)
         {
-            whirlWindLearned = true;
-            SkillManager.Instance.LearnSkill(SkillManager.PlayerSkill.WirlWind);
+            learnedWhirWind = true;
+            skillUI.DisplaySkill(PlayerSkill.WhirlWind);
+            onLearningSkill?.Invoke(PlayerSkill.WhirlWind);
         }
-        */
 
     }
 
