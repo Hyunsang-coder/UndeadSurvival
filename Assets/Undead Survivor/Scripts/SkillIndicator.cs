@@ -29,7 +29,9 @@ public class SkillIndicator : MonoBehaviour
 
                 coolTimeIndicator = player.GetSkillTimeIndicator(PlayerSkill.Shield);
                 break;
+                
             case PlayerSkill.WhirlWind:
+
                 coolTimeIndicator = player.GetSkillTimeIndicator(PlayerSkill.WhirlWind);
                 break;
         }

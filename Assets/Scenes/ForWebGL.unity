@@ -10069,7 +10069,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashUI: {fileID: 2011640065}
   shieldUI: {fileID: 897355835}
-  whirlUI: {fileID: 0}
+  whirlUI: {fileID: 1571116667}
   vampireUI: {fileID: 0}
 --- !u!1 &1077616265
 GameObject:
@@ -20434,7 +20434,7 @@ MonoBehaviour:
   player: {fileID: 0}
   coolTimeIndicator: 0
   image: {fileID: 0}
-  skill: 0
+  skill: 2
 --- !u!114 &1383601911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21820,18 +21820,24 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3a024cb6f945eeb41887fa193741c2c5, type: 2}
   - {fileID: 11400000, guid: 37e7c7ef1b0cf1a4eabaf16072a0fe1d, type: 2}
   - {fileID: 11400000, guid: 700722ba5e979ab4a91d0fdff73b0be5, type: 2}
+  hasShovel: 0
   shootingTimer: 0.3
   moveSpeed: 3
   shield: {fileID: 536239652}
+  shovel: {fileID: 0}
   dashLearned: 0
   whirlWindLearned: 0
   holyShieldLarned: 0
-  vampireSpiritLearned: 0
+  vampireLearned: 0
   dashForce: 15
   dashTimer: 0
   dashCoolTime: 7
+  shieldDuration: 5
   shieldTimer: 0
   shieldCoolTime: 10
+  whirWindDuration: 5
+  whirWindTimer: 0
+  whirWindCoolTime: 10
 --- !u!95 &1580147742
 Animator:
   serializedVersion: 5
@@ -28765,7 +28771,7 @@ GameObject:
   - component: {fileID: 2081676456}
   - component: {fileID: 2081676455}
   m_Layer: 0
-  m_Name: UnlockManager
+  m_Name: AchieveTracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28789,12 +28795,17 @@ MonoBehaviour:
   unlockedCharacters:
   - {fileID: 427849831}
   - {fileID: 404432979}
-  killsToUnlockCharacter1: 100
-  metCondition1: 0
-  dashLearned: 0
-  shieldLearned: 0
-  hasUnlockSecondCharacter: 0
-  hasUnlockFirstCharacter: 0
+  skillUI: {fileID: 1071007473}
+  conditionForCharOne: 100
+  metConditionForCharOne: 0
+  hasUnlockCharTwo: 0
+  hasUnlockCharOne: 0
+  conditionForDash: 22
+  learnedDash: 0
+  conditionForShield: 222
+  learnedShield: 0
+  conditionForWhirWind: 1
+  learnedWhirWind: 0
 --- !u!4 &2081676456
 Transform:
   m_ObjectHideFlags: 0
