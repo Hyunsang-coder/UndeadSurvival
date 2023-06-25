@@ -1622,7 +1622,7 @@ MonoBehaviour:
   resultMenu: {fileID: 747967994}
   enemyCleaner: {fileID: 195078930}
   GameTime: 0
-  MaxGameTime: 180
+  MaxGameTime: 240
   LevelUpModal: {fileID: 1189299930}
   isGameLive: 0
   kill: 0
@@ -1631,7 +1631,7 @@ MonoBehaviour:
   maxHealth: 100
   playerID: 0
   playerLevel: 0
-  NextLvXP: 0300000005000000070000000a0000000f000000140000001400000014000000140000001400000014000000140000001400000014000000140000001400000014000000140000001e0000001e000000
+  NextLvXP: 050000000a0000000a00000014000000140000001e0000001e0000001e0000001e0000002800000028000000280000003200000032000000320000003c0000003c0000003c0000004600000046000000
 --- !u!4 &290745842
 Transform:
   m_ObjectHideFlags: 0
@@ -29039,15 +29039,15 @@ MonoBehaviour:
   - {fileID: 427849831}
   - {fileID: 404432979}
   skillUI: {fileID: 1071007473}
-  conditionForCharOne: 100
+  conditionForCharOne: 200
   metConditionForCharOne: 0
   hasUnlockCharTwo: 0
   hasUnlockCharOne: 0
-  conditionForDash: 22
+  conditionForDash: 20
   learnedDash: 0
-  conditionForShield: 2
+  conditionForShield: 50
   learnedShield: 0
-  conditionForWhirWind: 1
+  conditionForWhirWind: 100
   learnedWhirWind: 0
 --- !u!4 &2081676456
 Transform:
